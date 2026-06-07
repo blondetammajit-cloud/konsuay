@@ -1,0 +1,2180 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Easy Learn - คู่มือการใช้งานคอมพิวเตอร์เครื่องแรกของคุณ</title>
+    <!-- Google Fonts: Prompt, Sarabun & Fredoka One for cute headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'Sarabun', 'sans-serif'],
+                        display: ['Fredoka', 'Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        vibrant: {
+                            pink: '#FF6B8B',
+                            purple: '#8A2BE2',
+                            yellow: '#FFD700',
+                            orange: '#FF7F50',
+                            blue: '#00F0FF',
+                            mint: '#50FA7B',
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        /* Custom scrollbar with vibrant colors */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffeef2;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #18122B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FF6B8B, #8A2BE2);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #FF7F50, #FFD700);
+        }
+
+        /* Multilingual display handlers */
+        html.lang-en-active .lang-th { display: none !important; }
+        html.lang-en-active .lang-en { display: inline !important; }
+        html.lang-en-active .lang-th-block { display: none !important; }
+        html.lang-en-active .lang-en-block { display: block !important; }
+        html.lang-en-active .lang-th-flex { display: none !important; }
+        html.lang-en-active .lang-en-flex { display: flex !important; }
+
+        html:not(.lang-en-active) .lang-en { display: none !important; }
+        html:not(.lang-en-active) .lang-th { display: inline !important; }
+        html:not(.lang-en-active) .lang-en-block { display: none !important; }
+        html:not(.lang-en-active) .lang-th-block { display: block !important; }
+        html:not(.lang-en-active) .lang-en-flex { display: none !important; }
+        html:not(.lang-en-active) .lang-th-flex { display: flex !important; }
+
+        /* Bubble Pop Animation */
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .bubble-pop {
+            animation: pop 0.4s ease-out;
+        }
+
+        /* Glass break animation for Undo (Ctrl+Z) */
+        @keyframes glass-break {
+            0% { transform: scale(1); opacity: 1; filter: none; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.8; filter: hue-rotate(60deg); }
+            100% { transform: scale(0.8) rotate(-5deg); opacity: 0; filter: blur(12px); }
+        }
+        .glass-broken {
+            animation: glass-break 0.6s forwards;
+        }
+        @keyframes glass-restore {
+            0% { transform: scale(0.8); opacity: 0; filter: blur(12px); }
+            100% { transform: scale(1); opacity: 1; filter: none; }
+        }
+        .glass-restored {
+            animation: glass-restore 0.6s forwards;
+        }
+        
+        /* Playful Floating Particles */
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        .animate-float {
+            animation: float-slow 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-amber-50/40 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 font-sans min-h-screen flex flex-col">
+
+    <!-- Custom Floating Alert Box (Vibrant Styling) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-slate-800 dark:text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border-4 border-vibrant-pink">
+        <span id="toast-icon"></span>
+        <p id="toast-msg" class="font-bold text-sm md:text-base"></p>
+    </div>
+
+    <!-- STICKY HEADER -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b-4 border-vibrant-pink/30 transition-colors shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-12 h-12 bg-gradient-to-tr from-vibrant-pink via-vibrant-orange to-vibrant-yellow rounded-2xl flex items-center justify-center text-white shadow-lg shadow-pink-500/30 transform hover:scale-105 transition-transform">
+                    <i data-lucide="sparkles" class="w-6 h-6 animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-xl leading-tight bg-gradient-to-r from-vibrant-pink to-vibrant-purple bg-clip-text text-transparent">PC Easy Learn</h1>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase">
+                        <span class="lang-th">คอมพิวเตอร์เครื่องแรกของคุณ</span>
+                        <span class="lang-en">Your First Computer Companion</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Main Navigation (Desktop) -->
+            <nav class="hidden md:flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl border-2 border-slate-200/50 dark:border-slate-800">
+                <button onclick="switchTab('home')" id="nav-home" class="px-4 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-white dark:hover:bg-slate-800 text-vibrant-pink bg-white shadow-sm">
+                    <span class="lang-th">หน้าแรก</span>
+                    <span class="lang-en">Home</span>
+                </button>
+                <button onclick="switchTab('lessons')" id="nav-lessons" class="px-4 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <span class="lang-th">บทเรียนการเรียนรู้</span>
+                    <span class="lang-en">Learning Lessons</span>
+                </button>
+                <button onclick="switchTab('shortcuts')" id="nav-shortcuts" class="px-4 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <span class="lang-th">ฝึกฝนคีย์ลัด</span>
+                    <span class="lang-en">Shortcut Practice</span>
+                </button>
+                <button onclick="switchTab('quiz')" id="nav-quiz" class="px-4 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <span class="lang-th">แบบทดสอบวัดความรู้</span>
+                    <span class="lang-en">Knowledge Quiz</span>
+                </button>
+            </nav>
+
+            <!-- Accessibility & Utility Box -->
+            <div class="flex items-center gap-2">
+                <!-- Language Switcher Button -->
+                <button onclick="toggleLanguage()" class="relative flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-vibrant-orange to-vibrant-pink hover:from-vibrant-pink hover:to-vibrant-purple text-white rounded-xl font-bold text-xs shadow-md shadow-pink-500/20 transform hover:scale-105 transition-all" title="สลับภาษา / Toggle Language">
+                    <i data-lucide="languages" class="w-4 h-4"></i>
+                    <span class="font-display font-semibold tracking-wider">TH / EN</span>
+                </button>
+
+                <!-- Text Size Adjuster -->
+                <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 border-2 border-slate-200 dark:border-slate-700">
+                    <button onclick="adjustTextSize('down')" title="ลดขนาดตัวอักษร / Decrease Text Size" class="p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-700 transition">
+                        <span class="text-xs font-bold">ก-</span>
+                    </button>
+                    <span class="px-2 text-xs font-bold text-slate-500 dark:text-slate-400" id="text-size-label">100%</span>
+                    <button onclick="adjustTextSize('up')" title="เพิ่มขนาดตัวอักษร / Increase Text Size" class="p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-700 transition">
+                        <span class="text-sm font-bold">ก+</span>
+                    </button>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button onclick="toggleDarkMode()" class="p-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="สลับโหมดมืด/สว่าง">
+                    <i data-lucide="sun" id="theme-icon-light" class="w-4 h-4 text-amber-500 hidden"></i>
+                    <i data-lucide="moon" id="theme-icon-dark" class="w-4 h-4 text-slate-600 dark:text-slate-400"></i>
+                </button>
+
+                <!-- Mobile Menu Toggle Button -->
+                <button onclick="toggleMobileMenu()" class="p-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl border-2 border-slate-200 dark:border-slate-700 md:hidden hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <i data-lucide="menu" id="mobile-menu-icon" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t-2 border-vibrant-pink/20 bg-white dark:bg-slate-950 transition-all">
+            <div class="px-4 py-3 space-y-2">
+                <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-xl font-bold text-sm bg-pink-50 dark:bg-pink-950/30 text-vibrant-pink">
+                    <span class="lang-th">หน้าแรก</span>
+                    <span class="lang-en">Home</span>
+                </button>
+                <button onclick="switchTab('lessons'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-xl font-bold text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">
+                    <span class="lang-th">บทเรียนการเรียนรู้</span>
+                    <span class="lang-en">Learning Lessons</span>
+                </button>
+                <button onclick="switchTab('shortcuts'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-xl font-bold text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">
+                    <span class="lang-th">ฝึกฝนคีย์ลัด</span>
+                    <span class="lang-en">Shortcut Practice</span>
+                </button>
+                <button onclick="switchTab('quiz'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-xl font-bold text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900">
+                    <span class="lang-th">แบบทดสอบวัดความรู้</span>
+                    <span class="lang-en">Knowledge Quiz</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="text-resizable-container">
+        
+        <!-- TAB: HOME -->
+        <section id="tab-content-home" class="tab-content space-y-12">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden bg-gradient-to-br from-vibrant-purple via-vibrant-pink to-vibrant-orange rounded-3xl text-white p-8 md:p-16 shadow-2xl shadow-purple-500/20">
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                    <i data-lucide="monitor" class="w-80 h-80"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl space-y-6">
+                    <span class="bg-white/20 backdrop-blur-md text-vibrant-yellow px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-wider uppercase border border-white/20">
+                        ⭐ <span class="lang-th">คู่มือคอมพิวเตอร์ฉบับสีสันสดใส เข้าใจง่ายที่สุด</span>
+                        <span class="lang-en">Super Friendly, Colorful Computer Guide</span>
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-display font-extrabold leading-tight tracking-tight drop-shadow-md">
+                        <span class="lang-th">มาเล่นและใช้งานคอมพิวเตอร์ด้วยความสนุกกันเถอะ!</span>
+                        <span class="lang-en">Let's Learn & Play with Computers in Fun Ways!</span>
+                    </h2>
+                    <p class="text-pink-100 text-base md:text-lg font-medium leading-relaxed max-w-2xl">
+                        <span class="lang-th">ยินดีต้อนรับสู่แหล่งการเรียนรู้แบบโต้ตอบ ที่พัฒนาขึ้นสำหรับผู้เริ่มต้นโดยเฉพาะ เรียนรู้อย่างเป็นธรรมชาติผ่านการทดลองใช้จริงทีละขั้นตอน ปลอดภัยและเพลิดเพลิน!</span>
+                        <span class="lang-en">Welcome to our interactive learning center designed specially for beginners. Learn naturally with playful simulators, completely safe and worry-free!</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                        <button onclick="switchTab('lessons')" class="bg-vibrant-yellow text-slate-900 hover:bg-white hover:text-vibrant-purple transition px-8 py-4 rounded-2xl font-extrabold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform flex items-center justify-center gap-2">
+                            <i data-lucide="play-circle" class="w-5 h-5"></i> 
+                            <span class="lang-th">เริ่มต้นบทเรียนแรก</span>
+                            <span class="lang-en">Start Your First Lesson</span>
+                        </button>
+                        <button onclick="switchTab('shortcuts')" class="bg-white/20 border-2 border-white/40 hover:bg-white/35 transition px-6 py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2">
+                            <i data-lucide="keyboard" class="w-5 h-5"></i> 
+                            <span class="lang-th">ฝึกจำลองคีย์ลัด</span>
+                            <span class="lang-en">Vibrant Shortcut Simulator</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Value Propositions / Highlights Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border-4 border-vibrant-pink/20 shadow-lg hover:shadow-xl hover:-translate-y-1 transform transition duration-300 flex flex-col items-start gap-4">
+                    <div class="w-14 h-14 bg-pink-100 dark:bg-pink-950/40 rounded-2xl flex items-center justify-center text-vibrant-pink shadow-inner">
+                        <i data-lucide="mouse-pointer-click" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-extrabold">
+                        <span class="lang-th">คลิกและโต้ตอบจริง</span>
+                        <span class="lang-en">Interactive Hands-on Practice</span>
+                    </h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-semibold">
+                        <span class="lang-th">ไม่ใช่แค่การอ่านข้อความอย่างเดียว! เว็บไซต์ของเรามีมินิเกมฝึกคลิกเมาส์ ระบบก๊อปวางจำลอง และแป้นพิมพ์เสมือนจริงให้ซ้อม</span>
+                        <span class="lang-en">We don't do boring lectures! Try our interactive mouse-clicking game, virtual file management, and real-time visual keyboard response.</span>
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border-4 border-vibrant-orange/20 shadow-lg hover:shadow-xl hover:-translate-y-1 transform transition duration-300 flex flex-col items-start gap-4">
+                    <div class="w-14 h-14 bg-orange-100 dark:bg-orange-950/40 rounded-2xl flex items-center justify-center text-vibrant-orange shadow-inner">
+                        <i data-lucide="shield-check" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-extrabold">
+                        <span class="lang-th">เกราะป้องกันภัยไซเบอร์</span>
+                        <span class="lang-en">Vibrant Cyber Security Guard</span>
+                    </h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-semibold">
+                        <span class="lang-th">สอนวิธีสร้างรหัสผ่านที่ปลอดภัยอย่างถูกต้อง และเครื่องมือจำลองแยกแยะ URL แฝงหลอกลวง (Phishing) ป้องกันมิจฉาชีพ</span>
+                        <span class="lang-en">Learn how to make strong passwords with our live analyzer and test your instincts by catching fake Phishing URLs safely!</span>
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border-4 border-vibrant-purple/20 shadow-lg hover:shadow-xl hover:-translate-y-1 transform transition duration-300 flex flex-col items-start gap-4">
+                    <div class="w-14 h-14 bg-purple-100 dark:bg-purple-950/40 rounded-2xl flex items-center justify-center text-vibrant-purple shadow-inner">
+                        <i data-lucide="accessibility" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-extrabold">
+                        <span class="lang-th">สองภาษาสะดวกอ่านง่าย</span>
+                        <span class="lang-en">Perfect Bilingual Support</span>
+                    </h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-semibold">
+                        <span class="lang-th">รองรับการสลับภาษา ไทย/อังกฤษ ได้ทันที ปุ่มกดขนาดใหญ่ พร้อมระบบขยายตัวอักษรเพื่อผู้สูงวัยและผู้เริ่มเรียนทุกคน</span>
+                        <span class="lang-en">Easily switch between Thai and English with a single tap. Complete with big colorful touch targets and text scaling adjustments.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Learning Path Checklist Overview -->
+            <div class="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-orange-500/10 dark:from-pink-950/20 dark:to-orange-950/20 border-4 border-dashed border-vibrant-pink/30 rounded-3xl p-6 md:p-8">
+                <h3 class="text-xl md:text-2xl font-display font-bold text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2">
+                    <i data-lucide="map" class="w-6 h-6 text-vibrant-pink animate-bounce"></i> 
+                    <span class="lang-th">แผนที่การผจญภัยสู่เซียนคอมพิวเตอร์</span>
+                    <span class="lang-en">Your Roadmap to Becoming a Tech Master</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div onclick="switchTab('lessons'); switchLessonTab('lesson1');" class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm hover:shadow-md cursor-pointer border-2 border-vibrant-pink/30 hover:-translate-y-1 transition duration-300">
+                        <div class="text-xs font-bold text-vibrant-pink mb-2">
+                            <span class="lang-th">บทที่ 1</span><span class="lang-en">Chapter 1</span>
+                        </div>
+                        <h4 class="font-bold text-base mb-1">
+                            <span class="lang-th">ฮาร์ดแวร์และการใช้เมาส์</span>
+                            <span class="lang-en">Mouse and Hardware Gym</span>
+                        </h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            <span class="lang-th">ฝึกคลิกซ้าย คลิกขวา ดับเบิลคลิกสัญกรณ์เมาส์ต่าง ๆ</span>
+                            <span class="lang-en">Interactive clicks, right-clicks, and double-clicks!</span>
+                        </p>
+                    </div>
+                    <div onclick="switchTab('lessons'); switchLessonTab('lesson2');" class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm hover:shadow-md cursor-pointer border-2 border-vibrant-orange/30 hover:-translate-y-1 transition duration-300">
+                        <div class="text-xs font-bold text-vibrant-orange mb-2">
+                            <span class="lang-th">บทที่ 2</span><span class="lang-en">Chapter 2</span>
+                        </div>
+                        <h4 class="font-bold text-base mb-1">
+                            <span class="lang-th">จัดการไฟล์และระบบ OS</span>
+                            <span class="lang-en">OS and Folder Quest</span>
+                        </h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            <span class="lang-th">ทำความเข้าใจพื้นที่เก็บข้อมูลและแฟ้มก๊อปไฟล์</span>
+                            <span class="lang-en">Play with drives, copy-paste simulator, and folders.</span>
+                        </p>
+                    </div>
+                    <div onclick="switchTab('lessons'); switchLessonTab('lesson3');" class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm hover:shadow-md cursor-pointer border-2 border-vibrant-purple/30 hover:-translate-y-1 transition duration-300">
+                        <div class="text-xs font-bold text-vibrant-purple mb-2">
+                            <span class="lang-th">บทที่ 3</span><span class="lang-en">Chapter 3</span>
+                        </div>
+                        <h4 class="font-bold text-base mb-1">
+                            <span class="lang-th">เน็ตปลอดภัย & รหัสผ่าน</span>
+                            <span class="lang-en">Secure Web Defender</span>
+                        </h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            <span class="lang-th">เรียนรู้สิทธิ์กุญแจล็อก ป้องกันโจรกรรมฟิชชิ่ง</span>
+                            <span class="lang-en">Secure HTTPS, catch scammers, build passwords.</span>
+                        </p>
+                    </div>
+                    <div onclick="switchTab('shortcuts')" class="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm hover:shadow-md cursor-pointer border-2 border-vibrant-blue/30 hover:-translate-y-1 transition duration-300">
+                        <div class="text-xs font-bold text-vibrant-blue mb-2">
+                            <span class="lang-th">โหมดพิเศษ</span><span class="lang-en">Special Mode</span>
+                        </div>
+                        <h4 class="font-bold text-base mb-1">
+                            <span class="lang-th">ห้องฝึกฝนคีย์ลัดอัจฉริยะ</span>
+                            <span class="lang-en">Vibrant Shortcut Arena</span>
+                        </h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            <span class="lang-th">ซ้อมกดแป้นลัดพร้อมเห็นผลแอนิเมชันน่าตื่นเต้น</span>
+                            <span class="lang-en">Watch magic animations of Ctrl+C, Ctrl+V, Ctrl+Z!</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: LESSONS -->
+        <section id="tab-content-lessons" class="tab-content hidden space-y-8">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Navigation Sidebar for Lessons -->
+                <aside class="md:w-1/4 flex flex-row md:flex-col gap-2.5 overflow-x-auto md:overflow-x-visible pb-3 md:pb-0 border-b-2 md:border-b-0 md:border-r-4 border-vibrant-pink/20 shrink-0">
+                    <button onclick="switchLessonTab('lesson1')" id="btn-lesson1" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all text-vibrant-pink bg-pink-50 dark:bg-pink-950/30 whitespace-nowrap md:whitespace-normal">
+                        <div class="w-8 h-8 bg-vibrant-pink text-white rounded-xl flex items-center justify-center shrink-0 shadow-md">
+                            <span class="font-display font-extrabold text-sm">1</span>
+                        </div>
+                        <span class="text-left leading-tight">
+                            <span class="lang-th">บทที่ 1: เมาส์ & อุปกรณ์</span>
+                            <span class="lang-en">Ch 1: Mouse & Gear</span>
+                        </span>
+                    </button>
+                    <button onclick="switchLessonTab('lesson2')" id="btn-lesson2" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 whitespace-nowrap md:whitespace-normal">
+                        <div class="w-8 h-8 bg-slate-200 dark:bg-slate-800 rounded-xl flex items-center justify-center shrink-0">
+                            <span class="font-display font-extrabold text-sm">2</span>
+                        </div>
+                        <span class="text-left leading-tight">
+                            <span class="lang-th">บทที่ 2: ระบบจัดการไฟล์</span>
+                            <span class="lang-en">Ch 2: File Manager</span>
+                        </span>
+                    </button>
+                    <button onclick="switchLessonTab('lesson3')" id="btn-lesson3" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 whitespace-nowrap md:whitespace-normal">
+                        <div class="w-8 h-8 bg-slate-200 dark:bg-slate-800 rounded-xl flex items-center justify-center shrink-0">
+                            <span class="font-display font-extrabold text-sm">3</span>
+                        </div>
+                        <span class="text-left leading-tight">
+                            <span class="lang-th">บทที่ 3: ท่องเน็ตปลอดภัย</span>
+                            <span class="lang-en">Ch 3: Cyber Security</span>
+                        </span>
+                    </button>
+                </aside>
+
+                <!-- Lessons Panels Box -->
+                <div class="flex-grow">
+                    
+                    <!-- SUBTAB: LESSON 1 -->
+                    <div id="lesson-tab-lesson1" class="lesson-panel space-y-8">
+                        <div>
+                            <span class="text-xs font-bold text-vibrant-pink uppercase tracking-widest bg-pink-100 dark:bg-pink-950/40 px-3 py-1 rounded-full">
+                                <span class="lang-th">บทที่ 1: เมาส์ (Mouse) และวิธีสั่งงานพื้นฐาน</span>
+                                <span class="lang-en">Chapter 1: Mastering Your Mouse</span>
+                            </span>
+                            <h2 class="text-2xl md:text-3xl font-display font-extrabold mt-3">
+                                <span class="lang-th">เมาส์ - ปลายนิ้วจำลองในคอมพิวเตอร์</span>
+                                <span class="lang-en">The Mouse - Your Magic Virtual Finger</span>
+                            </h2>
+                            <p class="text-slate-500 dark:text-slate-400 mt-2 font-medium">
+                                <span class="lang-th">การขยับและกดเมาส์อย่างถูกหลักช่วยป้องกันอาการเมื่อยล้าข้อมือ และทำให้คุณเปิดโปรแกรมต่าง ๆ ได้รวดเร็วฉับไว!</span>
+                                <span class="lang-en">Using and holding your mouse correctly prevents strain and turns you into a desktop wizard instantly!</span>
+                            </p>
+                        </div>
+
+                        <!-- Theory section -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-tr from-pink-50 to-orange-50 dark:from-slate-900 dark:to-slate-900 p-6 rounded-3xl border-4 border-vibrant-pink/20">
+                            <div class="space-y-3 text-sm">
+                                <h4 class="font-display font-extrabold text-vibrant-pink flex items-center gap-2">
+                                    <i data-lucide="hand" class="w-5 h-5 animate-bounce"></i> 
+                                    <span class="lang-th">วิธีจับเมาส์เพื่อถนอมข้อมือ (Ergonomics)</span>
+                                    <span class="lang-en">Healthy Mouse Holding Posture</span>
+                                </h4>
+                                <ul class="list-disc list-inside space-y-2 text-slate-600 dark:text-slate-300 font-semibold">
+                                    <li><span class="lang-th"><strong>วางทั้งอุ้งมือ:</strong> วางโอบเมาส์สบาย ๆ ไม่เกร็งนิ้ว</span>
+                                        <span class="lang-en"><strong>Relax Your Hand:</strong> Drape your hand loosely over the mouse body.</span></li>
+                                    <li><span class="lang-th"><strong>นิ้วชี้และนิ้วกลาง:</strong> ชี้วางปุ่มซ้าย กลางวางปุ่มขวาอย่างเป็นธรรมชาติ</span>
+                                        <span class="lang-en"><strong>Index & Middle:</strong> Place index on the left, middle on the right button.</span></li>
+                                    <li><span class="lang-th"><strong>ข้อมือขนานราบ:</strong> เลี่ยงการยกข้อมือแอ่นหรือพับ เพื่อเลี่ยงพังผืดทับเส้นประสาท</span>
+                                        <span class="lang-en"><strong>Wrist Flat:</strong> Keep wrist parallel to the desk to protect joints.</span></li>
+                                </ul>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <h4 class="font-display font-extrabold text-vibrant-orange flex items-center gap-2">
+                                    <i data-lucide="mouse-pointer" class="w-5 h-5"></i> 
+                                    <span class="lang-th">หน้าตาของลูกศรเมาส์ (Cursors) หมายถึงอะไรบ้าง?</span>
+                                    <span class="lang-en">Understanding Cursor Shapes</span>
+                                </h4>
+                                <div class="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                    <div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 shadow-sm">
+                                        <span class="font-mono font-bold text-xl text-vibrant-pink">↖</span>
+                                        <span><span class="lang-th">ลูกศร: ชี้ทั่วไป</span><span class="lang-en">Arrow: Click normal</span></span>
+                                    </div>
+                                    <div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 shadow-sm">
+                                        <span class="font-mono font-bold text-xl text-vibrant-orange">☝</span>
+                                        <span><span class="lang-th">มือชี้: เปิดลิงก์ได้</span><span class="lang-en">Hand: Clickable link</span></span>
+                                    </div>
+                                    <div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 shadow-sm">
+                                        <span class="font-mono font-bold text-xl text-vibrant-purple">⏳</span>
+                                        <span><span class="lang-th">นาฬิกาทราย: รอก่อน</span><span class="lang-en">Hourglass: Loading</span></span>
+                                    </div>
+                                    <div class="p-2.5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 shadow-sm">
+                                        <span class="font-mono font-bold text-xl text-vibrant-blue">Ⅰ</span>
+                                        <span><span class="lang-th">ตัว I: พื้นที่พิมพ์อักษร</span><span class="lang-en">I-Beam: Typing area</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mouse Trainer Playground Interface -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Left Playground: Left & Right Click -->
+                            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border-4 border-vibrant-pink/20 shadow-md space-y-6">
+                                <h3 class="text-lg font-display font-extrabold flex items-center gap-2 text-vibrant-pink">
+                                    <i data-lucide="gamepad-2" class="w-6 h-6"></i> 
+                                    <span class="lang-th">สนามเด็กเล่นฝึกคลิกซ้าย-ขวา</span>
+                                    <span class="lang-en">Left & Right Click Playground</span>
+                                </h3>
+
+                                <!-- Left Click Gym -->
+                                <div class="border-2 border-dashed border-vibrant-pink/30 rounded-2xl p-4 bg-pink-50/20 dark:bg-pink-955/10 space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-sm bg-vibrant-pink text-white px-3 py-1 rounded-full shadow-sm">1. Left Click</span>
+                                        <span class="text-xs font-extrabold text-slate-500">
+                                            <span class="lang-th">คะแนน:</span><span class="lang-en">Score:</span> 
+                                            <strong id="click-score" class="text-vibrant-pink text-base">0</strong> / 5
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                        <span class="lang-th"><strong>วิธีซ้อม:</strong> ดับชนวงกลมเป้าหมายบินสีชมพูที่ขยับหนีไปเรื่อย ๆ เพื่อสร้างความแม่นยำ</span>
+                                        <span class="lang-en"><strong>Task:</strong> Hit the floating pink bubble. Click to increase your score!</span>
+                                    </p>
+                                    <div class="h-32 bg-white dark:bg-slate-950 rounded-xl relative overflow-hidden border-2 border-slate-100 dark:border-slate-800 flex items-center justify-center">
+                                        <button id="target-bubble" onclick="onLeftClickPractice()" class="absolute w-14 h-14 bg-gradient-to-tr from-vibrant-pink to-vibrant-purple hover:scale-110 active:scale-95 rounded-full flex items-center justify-center text-white font-extrabold text-xs transition-all duration-300 shadow-lg shadow-pink-500/40" style="top: 25px; left: 35%;">
+                                            <span class="lang-th">กดคลิก!</span><span class="lang-en">CLICK!</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Right Click Gym -->
+                                <div class="border-2 border-dashed border-vibrant-orange/30 rounded-2xl p-4 bg-orange-50/20 dark:bg-orange-955/10 space-y-3">
+                                    <span class="font-bold text-sm bg-vibrant-orange text-white px-3 py-1 rounded-full shadow-sm">2. Right Click</span>
+                                    <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                        <span class="lang-th"><strong>วิธีซ้อม:</strong> กดคลิกขวา (ขวาสั่งเมนูพิเศษ) ในช่องด้านล่างเพื่อแสดงเครื่องมือลัดจำลอง</span>
+                                        <span class="lang-en"><strong>Task:</strong> Right-click the green dashed box to trigger the popup helper menu!</span>
+                                    </p>
+                                    <div id="right-click-zone" class="h-32 bg-emerald-500/5 dark:bg-emerald-950/20 rounded-xl border-4 border-dashed border-emerald-300 dark:border-emerald-800 flex flex-col items-center justify-center cursor-context-menu relative overflow-hidden">
+                                        <i data-lucide="mouse" class="w-8 h-8 text-emerald-400 animate-float mb-1"></i>
+                                        <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                                            <span class="lang-th">คลิกขวาในพื้นที่สีเขียวตรงนี้</span>
+                                            <span class="lang-en">Right-click inside this zone</span>
+                                        </span>
+                                        
+                                        <!-- Simulated Custom Context Menu -->
+                                        <div id="simulated-context-menu" class="hidden absolute bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl py-1.5 w-48 z-10 text-xs text-left font-semibold">
+                                            <div onclick="onContextMenuOption('view')" class="px-3.5 py-2 hover:bg-emerald-50 dark:hover:bg-slate-800 cursor-pointer flex items-center gap-2"><i data-lucide="eye" class="w-3.5 h-3.5 text-vibrant-pink"></i> <span class="lang-th">แสดงมุมมอง</span><span class="lang-en">Show View</span></div>
+                                            <div onclick="onContextMenuOption('refresh')" class="px-3.5 py-2 hover:bg-emerald-50 dark:hover:bg-slate-800 cursor-pointer flex items-center gap-2"><i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-vibrant-orange"></i> <span class="lang-th">รีเฟรชความจำ</span><span class="lang-en">Refresh Page</span></div>
+                                            <hr class="border-slate-100 dark:border-slate-700">
+                                            <div onclick="onContextMenuOption('new-folder')" class="px-3.5 py-2 hover:bg-emerald-50 dark:hover:bg-slate-800 cursor-pointer flex items-center gap-2"><i data-lucide="folder-plus" class="w-3.5 h-3.5 text-vibrant-purple"></i> <span class="lang-th">สร้างโฟลเดอร์ใหม่</span><span class="lang-en">Create New Folder</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Playground: Double Click & Scroll -->
+                            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border-4 border-vibrant-purple/20 shadow-md space-y-6">
+                                <h3 class="text-lg font-display font-extrabold flex items-center gap-2 text-vibrant-purple">
+                                    <i data-lucide="award" class="w-6 h-6"></i> 
+                                    <span class="lang-th">ทักษะเมาส์ชั้นสูงแบบโต้ตอบ</span>
+                                    <span class="lang-en">Advanced Interactive Mouse Skills</span>
+                                </h3>
+
+                                <!-- Double Click Gym -->
+                                <div class="border-2 border-dashed border-vibrant-purple/30 rounded-2xl p-4 bg-purple-50/20 dark:bg-purple-955/10 space-y-3">
+                                    <span class="font-bold text-sm bg-vibrant-purple text-white px-3 py-1 rounded-full shadow-sm">3. Double Click</span>
+                                    <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                        <span class="lang-th"><strong>วิธีซ้อม:</strong> ดับเบิลคลิกซ้ายรัว ๆ สองครั้งติดกันอย่างไวที่กล่องของขวัญเพื่อเปิดดูรางวัลซ่อนไว้!</span>
+                                        <span class="lang-en"><strong>Task:</strong> Double-click (tap twice rapidly) on the gift box to unlock the cute reward!</span>
+                                    </p>
+                                    <div class="h-32 bg-white dark:bg-slate-950 rounded-xl border-2 border-slate-100 dark:border-slate-800 flex items-center justify-center">
+                                        <div id="gift-box" ondblclick="onGiftDoubleClick()" class="cursor-pointer text-center group transform hover:scale-105 active:scale-95 transition-all">
+                                            <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mx-auto text-vibrant-purple group-hover:rotate-6 transition-transform">
+                                                <i data-lucide="package" id="gift-icon" class="w-9 h-9"></i>
+                                            </div>
+                                            <span id="gift-text" class="text-xs font-extrabold text-vibrant-purple mt-2 block">
+                                                <span class="lang-th">🎁 ดับเบิลคลิกเปิดกล่อง!</span>
+                                                <span class="lang-en">🎁 Double-click to open!</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Scroll Wheel Gym -->
+                                <div class="border-2 border-dashed border-vibrant-blue/30 rounded-2xl p-4 bg-blue-50/20 dark:bg-blue-955/10 space-y-3">
+                                    <span class="font-bold text-sm bg-vibrant-blue text-slate-900 px-3 py-1 rounded-full shadow-sm">4. Scroll Wheel</span>
+                                    <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                        <span class="lang-th"><strong>วิธีซ้อม:</strong> ใช้ลูกกลิ้งตรงกลางเมาส์รูดหน้าจอลงไปข้างล่างเพื่อค้นหาของรางวัลสีเหลือง</span>
+                                        <span class="lang-en"><strong>Task:</strong> Roll the center mouse wheel down the scrolling window below to uncover the bright orange ticket!</span>
+                                    </p>
+                                    <div onscroll="onScrollCheck(this)" class="h-32 bg-white dark:bg-slate-950 rounded-xl border-2 border-slate-100 dark:border-slate-800 overflow-y-auto p-3 space-y-2.5 relative">
+                                        <div class="bg-slate-100 dark:bg-slate-900 h-12 rounded-xl flex items-center justify-center text-xs text-slate-400 font-semibold"><span class="lang-th">หมวดหมู่ที่ 1 - เลื่อนรูดสกรอลล์ลงไปอีก</span><span class="lang-en">Layer 1 - Keep scrolling down...</span></div>
+                                        <div class="bg-slate-100 dark:bg-slate-900 h-12 rounded-xl flex items-center justify-center text-xs text-slate-400 font-semibold"><span class="lang-th">หมวดหมู่ที่ 2 - ใกล้สว่างขึ้นแล้ว...</span><span class="lang-en">Layer 2 - Almost there...</span></div>
+                                        <div id="scroll-target" class="bg-gradient-to-r from-vibrant-orange to-vibrant-pink text-white h-12 rounded-xl flex items-center justify-center text-xs font-extrabold shadow-lg shadow-pink-500/20 transition-all duration-300">
+                                            🎉 <span class="lang-th">เก่งมาก! คุณหาปุ่มตั๋วทองพบแล้ว!</span>
+                                            <span class="lang-en">Awesome! You uncovered the Golden Ticket!</span>
+                                        </div>
+                                        <div class="bg-slate-100 dark:bg-slate-900 h-12 rounded-xl flex items-center justify-center text-xs text-slate-400 font-semibold"><span class="lang-th">หมวดหมู่ที่ 4 - ทางผ่านทั่วไป</span><span class="lang-en">Layer 4 - Standard storage zone</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB: LESSON 2 -->
+                    <div id="lesson-tab-lesson2" class="lesson-panel hidden space-y-6">
+                        <div>
+                            <span class="text-xs font-bold text-vibrant-orange uppercase tracking-widest bg-orange-100 dark:bg-orange-950/40 px-3 py-1 rounded-full">
+                                <span class="lang-th">บทที่ 2: ระบบจัดการไฟล์และไดรฟ์บันทึกข้อมูล</span>
+                                <span class="lang-en">Chapter 2: Organizing Files and Folders</span>
+                            </span>
+                            <h2 class="text-2xl md:text-3xl font-display font-extrabold mt-3">
+                                <span class="lang-th">ระบบจัดเก็บเอกสารอย่างอัจฉริยะ</span>
+                                <span class="lang-en">Managing Files & Your Operating System</span>
+                            </h2>
+                            <p class="text-slate-500 dark:text-slate-400 mt-2 font-medium">
+                                <span class="lang-th">ในคอมพิวเตอร์เราสร้างแฟ้มเก็บของเรียกว่า "โฟลเดอร์ (Folder)" เพื่อให้เครื่องมองสะอาดตาและสืบค้นข้อมูลหาเอกสารต่าง ๆ ได้ไว</span>
+                                <span class="lang-en">Learn how files, folders, and system drives help store documents easily without crowding your desktop dashboard!</span>
+                            </p>
+                        </div>
+
+                        <!-- Theory grids of OS & Files -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            <!-- OS Cards -->
+                            <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-vibrant-pink/20 space-y-2 shadow-sm">
+                                <span class="font-display font-bold text-sm text-vibrant-pink flex items-center gap-1.5"><i data-lucide="cpu" class="w-4 h-4"></i> <span class="lang-th">ระบบปฏิบัติการ (OS)</span><span class="lang-en">Operating System</span></span>
+                                <p class="leading-relaxed">
+                                    <span class="lang-th">เป็นเหมือนผู้จัดการใหญ่ที่ดูแลระบบของเครื่องเพื่อให้เราคุยรู้เรื่อง ยอดฮิตอย่าง Microsoft Windows หรือ macOS ของแอปเปิ้ล</span>
+                                    <span class="lang-en">The main software controlling hardware and runs all programs. Popular OS include Microsoft Windows and Apple macOS.</span>
+                                </p>
+                            </div>
+                            <!-- Drive Cards -->
+                            <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-vibrant-orange/20 space-y-2 shadow-sm">
+                                <span class="font-display font-bold text-sm text-vibrant-orange flex items-center gap-1.5"><i data-lucide="database" class="w-4 h-4"></i> <span class="lang-th">ความแตกต่าง Drive C: & D:</span><span class="lang-en">Drives C vs D Explained</span></span>
+                                <p class="leading-relaxed">
+                                    <span class="lang-th"><strong>Drive C:</strong> ติดตั้งระบบหลักและโปรแกรมสำคัญ<br><strong>Drive D:</strong> แนะนำให้ใช้บันทึกเก็บข้อมูลส่วนตัวปลอดภัยหากระบบเจ๊ง</span>
+                                    <span class="lang-en"><strong>Drive C:</strong> Strictly reserved for systems and main apps.<br><strong>Drive D:</strong> Best place for files, photos, and music to stay safe.</span>
+                                </p>
+                            </div>
+                            <!-- Extensions Cards -->
+                            <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-vibrant-purple/20 space-y-2 shadow-sm">
+                                <span class="font-display font-bold text-sm text-vibrant-purple flex items-center gap-1.5"><i data-lucide="file-type-2" class="w-4 h-4"></i> <span class="lang-th">นามสกุลไฟล์หลักยอดฮิต</span><span class="lang-en">Understand File Formats</span></span>
+                                <p class="leading-relaxed">
+                                    <span class="lang-th"><strong>.docx:</strong> เอกสาร Word รายงาน<br><strong>.pdf:</strong> อ่านหนังสือสากลตัวหนังสือไม่เบี้ยว<br><strong>.xlsx:</strong> ตารางคิดเลขสูตรคำนวณ Excel</span>
+                                    <span class="lang-en"><strong>.docx:</strong> Report typing document.<br><strong>.pdf:</strong> Standard readable files.<br><strong>.xlsx:</strong> Excel spreadsheets grid calculations.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Simulated File Explorer Window -->
+                        <div class="bg-white dark:bg-slate-900 rounded-3xl border-4 border-vibrant-orange/30 shadow-2xl overflow-hidden">
+                            <!-- Windows Toolbar -->
+                            <div class="bg-gradient-to-r from-vibrant-pink/10 to-vibrant-orange/10 dark:from-slate-800 dark:to-slate-850 px-5 py-4 border-b-2 border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3.5 h-3.5 bg-rose-500 rounded-full"></div>
+                                    <div class="w-3.5 h-3.5 bg-yellow-500 rounded-full"></div>
+                                    <div class="w-3.5 h-3.5 bg-green-500 rounded-full"></div>
+                                    <span class="text-xs font-extrabold text-slate-700 dark:text-slate-300 ml-2">
+                                        <span class="lang-th">เครื่องมือจัดการเอกสารอัจฉริยะ (My Computer)</span>
+                                        <span class="lang-en">My Virtual Document Workspace</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <button onclick="changeExplorerTab('files')" id="explorer-btn-files" class="text-xs font-bold px-3.5 py-2 rounded-xl transition bg-vibrant-orange text-white shadow-md shadow-orange-500/20">
+                                        <span class="lang-th">แฟ้มงานหลัก</span><span class="lang-en">My Files</span>
+                                    </button>
+                                    <button onclick="changeExplorerTab('trash')" id="explorer-btn-trash" class="text-xs font-bold px-3.5 py-2 rounded-xl transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                                        <span class="lang-th">ถังขยะ (<span id="trash-count">0</span>)</span>
+                                        <span class="lang-en">Recycle Bin (<span id="trash-count-en">0</span>)</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Explorer Interaction Panel -->
+                            <div class="p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+                                <!-- Command Toolbar Side -->
+                                <div class="md:col-span-1 flex flex-col gap-2.5">
+                                    <h4 class="text-xs font-extrabold uppercase text-slate-400">
+                                        <span class="lang-th">แผงคำสั่งด่วน</span><span class="lang-en">Quick Command</span>
+                                    </h4>
+                                    <button onclick="createSimulatedFolder()" class="w-full bg-vibrant-pink hover:bg-pink-600 text-white transition-all py-2.5 px-3 rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-md shadow-pink-500/20">
+                                        <i data-lucide="folder-plus" class="w-4 h-4"></i> 
+                                        <span class="lang-th">สร้างโฟลเดอร์ใหม่</span><span class="lang-en">Create Folder</span>
+                                    </button>
+                                    <button id="btn-copy-sim" onclick="copySimulatedFile()" class="w-full bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-all py-2.5 px-3 rounded-xl text-xs font-extrabold flex items-center gap-2 border-2 border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <i data-lucide="copy" class="w-4 h-4 text-vibrant-orange"></i> 
+                                        <span class="lang-th">คัดลอกแฟ้มที่เลือก</span><span class="lang-en">Copy Selected</span>
+                                    </button>
+                                    <button id="btn-paste-sim" onclick="pasteSimulatedFile()" disabled class="w-full bg-slate-100 dark:bg-slate-800 opacity-50 py-2.5 px-3 rounded-xl text-xs font-extrabold flex items-center gap-2 border-2 border-slate-200 dark:border-slate-700 cursor-not-allowed">
+                                        <i data-lucide="clipboard-paste" class="w-4 h-4"></i> 
+                                        <span class="lang-th">วางไฟล์ก๊อปปี้</span><span class="lang-en">Paste Copied</span>
+                                    </button>
+                                    <button id="btn-delete-sim" onclick="deleteSimulatedFile()" class="w-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 border-2 border-rose-500/20 transition-all py-2.5 px-3 rounded-xl text-xs font-extrabold flex items-center gap-2">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i> 
+                                        <span id="btn-delete-label-th" class="lang-th">ลบแฟ้มลงถังขยะ</span>
+                                        <span id="btn-delete-label-en" class="lang-en">Move to Bin</span>
+                                    </button>
+                                    <hr class="border-slate-200 dark:border-slate-800 my-1">
+                                    <div class="p-4 bg-orange-500/5 dark:bg-orange-950/10 rounded-2xl border-2 border-vibrant-orange/10 text-[11px] leading-relaxed font-bold text-vibrant-orange">
+                                        💡 <span class="lang-th"><strong>วิธีซ้อมย้ายไฟล์:</strong><br>1. คลิกไฟล์ที่ชอบ<br>2. กด "คัดลอกแฟ้ม"<br>3. กดปุ่ม "วางไฟล์" ทับออกมา!</span>
+                                        <span class="lang-en">💡 <strong>How to Copy-Paste:</strong><br>1. Click on a file below.<br>2. Hit "Copy Selected".<br>3. Hit "Paste Copied" to clone!</span>
+                                    </div>
+                                </div>
+
+                                <!-- Explorer Files Grid Area -->
+                                <div class="md:col-span-3 border-4 border-dashed border-vibrant-orange/20 rounded-2xl p-4 min-h-[240px] bg-amber-50/10 dark:bg-slate-950 flex flex-col">
+                                    <div id="explorer-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                        <!-- Dynamic Folders rendered via JS -->
+                                    </div>
+                                    <div id="explorer-empty-msg" class="hidden flex-col items-center justify-center text-slate-400 py-12 gap-2 my-auto">
+                                        <i data-lucide="folder-open" class="w-12 h-12 text-slate-300"></i>
+                                        <span class="text-xs font-bold">
+                                            <span class="lang-th">แฟ้มว่างเปล่า ไม่มีรายการเอกสาร</span>
+                                            <span class="lang-en">Folder is currently empty!</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB: LESSON 3 -->
+                    <div id="lesson-tab-lesson3" class="lesson-panel hidden space-y-6">
+                        <div>
+                            <span class="text-xs font-bold text-vibrant-purple uppercase tracking-widest bg-purple-100 dark:bg-purple-950/40 px-3 py-1 rounded-full">
+                                <span class="lang-th">บทที่ 3: ความปลอดภัยและปัญญาในการระวังภัยไซเบอร์</span>
+                                <span class="lang-en">Chapter 3: Safe Surfing & Security Shield</span>
+                            </span>
+                            <h2 class="text-2xl md:text-3xl font-display font-extrabold mt-3">
+                                <span class="lang-th">เกราะเพชรป้องกันมิจฉาชีพท่องเน็ต</span>
+                                <span class="lang-en">Surf Safely & Shield Your Private Accounts</span>
+                            </h2>
+                            <p class="text-slate-500 dark:text-slate-400 mt-2 font-medium">
+                                <span class="lang-th">อินเทอร์เน็ตมีทั้งสาระความสนุกแต่ก็มีโจรขโมยข้อมูล เราต้องรู้ทันตัวล็อกความปลอดภัยและไม่หลงเชื่อลิงก์หลอกกดด่วน!</span>
+                                <span class="lang-en">The world wide web is amazing, but we must protect our accounts with secure locks and watch out for phishing traps!</span>
+                            </p>
+                        </div>
+
+                        <!-- Info box about HTTPS vs HTTP and Malwares -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-slate-900 dark:to-slate-900 p-6 rounded-3xl border-4 border-vibrant-purple/20">
+                            <!-- Left: Locks -->
+                            <div class="space-y-3 text-sm">
+                                <h4 class="font-display font-extrabold text-emerald-500 flex items-center gap-1.5 animate-pulse">
+                                    <i data-lucide="lock" class="w-5 h-5"></i> 
+                                    <span class="lang-th">สัญญาณความปลอดภัย HTTPS มีกุญแจล็อก!</span>
+                                    <span class="lang-en">Look for the Padlock Security (HTTPS)</span>
+                                </h4>
+                                <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-xs font-semibold">
+                                    <span class="lang-th">เมื่อป้อนบัตรเครดิต ทำงานการเงิน หรือป้อนรหัสส่วนตัว ให้คอยชำเลืองมองแถบค้นหา URL ด้านบนทุกรอบ:</span>
+                                    <span class="lang-en">Always look at your browser address bar when entering password credentials or buying items online:</span>
+                                </p>
+                                <ul class="list-disc list-inside space-y-1.5 text-xs text-slate-600 dark:text-slate-300 font-semibold">
+                                    <li><strong>https:// (<span class="text-emerald-500">Secure</span>):</strong> <span class="lang-th">มีการแปลงรหัสลับดักฟังข้อมูลระหว่างทางไม่ได้</span><span class="lang-en">Data encrypted safely from hackers.</span></li>
+                                    <li><strong>http:// (<span class="text-rose-500">Unsafe</span>):</strong> <span class="lang-th">ข้อมูลวิ่งเป็นตัวอักษรธรรมดา ใครก็แอบดูได้</span><span class="lang-en">Normal plain text. Hackers can intercept easily.</span></li>
+                                </ul>
+                            </div>
+                            <!-- Right: Scammer traps -->
+                            <div class="space-y-3 text-sm">
+                                <h4 class="font-display font-extrabold text-vibrant-purple flex items-center gap-1.5">
+                                    <i data-lucide="shield-alert" class="w-5 h-5"></i> 
+                                    <span class="lang-th">3 สหายปีศาจทำลายคอมพิวเตอร์</span>
+                                    <span class="lang-en">The 3 Cruelest Cyber Enemies</span>
+                                </h4>
+                                <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300 font-semibold">
+                                    <p><strong>1. Virus (ไวรัส):</strong> <span class="lang-th">แอบทำลายเครื่องเจาะไฟล์รังควานให้ระบบพัง</span><span class="lang-en">Attaches to files and destroys normal programs.</span></p>
+                                    <p><strong>2. Ransomware (แรนซัมแวร์):</strong> <span class="lang-th">จับทุกไฟล์ใส่รหัสล็อก แล้วเรียกเอาค่าไถ่</span><span class="lang-en">Locks your files and demands ransom money to free them.</span></p>
+                                    <p><strong>3. Phishing (ฟิชชิ่ง):</strong> <span class="lang-th">ตัวปลอมสวมรอยเว็บธนาคารหลอกล่อให้คุณกรอกรหัส</span><span class="lang-en">Fake links posing as banks to trick you into typing passwords.</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grid: Passwords & Phishing interactive tester -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Password Tester Sandbox -->
+                            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border-4 border-vibrant-pink/20 shadow-md space-y-4">
+                                <h3 class="text-lg font-display font-extrabold flex items-center gap-2 text-vibrant-pink">
+                                    <i data-lucide="key-round" class="w-6 h-6 animate-spin"></i> 
+                                    <span class="lang-th">ตัวช่วยประเมินความปลอดภัยรหัสผ่าน</span>
+                                    <span class="lang-en">Bilingual Live Password Strength Meter</span>
+                                </h3>
+                                <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                    <span class="lang-th">ลองกรอกรหัสผ่านสมมุติลงในช่อง เพื่อดูว่าผ่านเกณฑ์เกราะเหล็ก 4 ดวงหรือไม่</span>
+                                    <span class="lang-en">Type a mock password to test how fast computers can hack it. Aim for all 4 checkmarks!</span>
+                                </p>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-xs font-extrabold text-slate-500 block">
+                                        <span class="lang-th">ทดสอบกรอกคำรหัสผ่าน</span><span class="lang-en">Input Password:</span>
+                                    </label>
+                                    <input type="text" id="pwd-checker-input" oninput="checkPasswordStrength()" placeholder="e.g. My$ecreT2026" class="w-full bg-slate-50 dark:bg-slate-950 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-vibrant-pink font-mono">
+                                </div>
+
+                                <!-- Checklist dots indicators -->
+                                <div class="space-y-2 pt-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
+                                    <div class="flex items-center gap-2">
+                                        <span id="pwd-rule-len" class="w-3.5 h-3.5 rounded-full bg-slate-300 dark:bg-slate-800 transition-all"></span>
+                                        <span><span class="lang-th">ยาวอย่างน้อย 8 ตัวขึ้นไป</span><span class="lang-en">At least 8 characters long</span></span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span id="pwd-rule-case" class="w-3.5 h-3.5 rounded-full bg-slate-300 dark:bg-slate-800 transition-all"></span>
+                                        <span><span class="lang-th">มีพิมพ์ใหญ่ (A-Z) และพิมพ์เล็ก (a-z)</span><span class="lang-en">Contains UPPER & lowercase letters</span></span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span id="pwd-rule-num" class="w-3.5 h-3.5 rounded-full bg-slate-300 dark:bg-slate-800 transition-all"></span>
+                                        <span><span class="lang-th">มีเลขผสมอยู่ (0-9)</span><span class="lang-en">Contains at least one number</span></span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span id="pwd-rule-sym" class="w-3.5 h-3.5 rounded-full bg-slate-300 dark:bg-slate-800 transition-all"></span>
+                                        <span><span class="lang-th">มีสัญลักษณ์พิเศษปนอยู่ (เช่น $, !, @, #)</span><span class="lang-en">Contains symbols ($, !, @, #)</span></span>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl flex items-center justify-between border-2 border-slate-200 dark:border-slate-800">
+                                    <span class="text-xs font-extrabold text-slate-500"><span class="lang-th">ระดับความคุ้มกัน:</span><span class="lang-en">Defense Level:</span></span>
+                                    <span id="pwd-strength-label" class="text-sm font-extrabold text-rose-500">
+                                        <span class="lang-th">ว่างเปล่า</span><span class="lang-en">Empty Input</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Phishing Web Catcher Game -->
+                            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border-4 border-vibrant-purple/20 shadow-md space-y-4">
+                                <h3 class="text-lg font-display font-extrabold flex items-center gap-2 text-vibrant-purple">
+                                    <i data-lucide="shield-check" class="w-6 h-6"></i> 
+                                    <span class="lang-th">มินิเกมดักจับสัญญานปลอม URL ฟิชชิ่ง</span>
+                                    <span class="lang-en">Catch the Scammer URL Quiz</span>
+                                </h3>
+                                <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                    <span class="lang-th">มิจฉาชีพจะทำหน้าล็อกอินเลียนแบบธนาคารมาหลอกท่าน ลองทายดูซิว่า ข้อใดเป็นลิงก์จริงและปลอดภัยที่สุด?</span>
+                                    <span class="lang-en">Scammers send fake email bank warnings. Tap on the option that represents the genuine SCB bank link!</span>
+                                </p>
+                                
+                                <div class="grid grid-cols-1 gap-3 pt-2">
+                                    <!-- Choice A -->
+                                    <button onclick="onSelectPhishing('scb-fake')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 hover:border-vibrant-pink hover:-translate-y-0.5 transform transition-all bg-slate-50 dark:bg-slate-950/50 flex items-start gap-3">
+                                        <div class="w-6 h-6 bg-vibrant-pink text-white rounded-full flex items-center justify-center shrink-0 font-extrabold text-xs">A</div>
+                                        <div>
+                                            <span class="text-[10px] text-vibrant-pink font-bold block">🚨 <span class="lang-th">ลิงก์ในอีเมลเร่งด่วน</span><span class="lang-en">Link in Urgent Warning email</span></span>
+                                            <code class="text-xs font-extrabold text-rose-600 dark:text-rose-400 block break-all">http://scb-bank-security-service.com/login</code>
+                                        </div>
+                                    </button>
+
+                                    <!-- Choice B -->
+                                    <button onclick="onSelectPhishing('scb-real')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 hover:border-vibrant-purple hover:-translate-y-0.5 transform transition-all bg-slate-50 dark:bg-slate-950/50 flex items-start gap-3">
+                                        <div class="w-6 h-6 bg-vibrant-purple text-white rounded-full flex items-center justify-center shrink-0 font-extrabold text-xs">B</div>
+                                        <div>
+                                            <span class="text-[10px] text-emerald-500 font-bold block">✨ <span class="lang-th">ที่อยู่ทางการสากล</span><span class="lang-en">Official Government domain</span></span>
+                                            <code class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 block break-all">https://www.scb.co.th/th/personal-banking</code>
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <!-- Explanation dynamic box -->
+                                <div id="phishing-result-box" class="hidden p-4 rounded-2xl text-xs font-semibold leading-relaxed border-2 transition-all">
+                                    <p id="phishing-result-text"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: SHORTCUT TRAINER -->
+        <section id="tab-content-shortcuts" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <span class="text-xs font-bold text-vibrant-pink uppercase tracking-widest bg-pink-100 dark:bg-pink-950/40 px-3 py-1 rounded-full">
+                    <span class="lang-th">เครื่องมือฝึกจำลองปุ่มด่วนลัดคีย์บอร์ด</span>
+                    <span class="lang-en">Vibrant Interactive Keyboard Arena</span>
+                </span>
+                <h2 class="text-2xl md:text-3xl font-display font-extrabold">
+                    <span class="lang-th">แป้นคีย์บอร์ดจำลองสีรุ้งป๊อปสุดตระการตา</span>
+                    <span class="lang-en">Press Keys on Your Keyboard to Animate!</span>
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-semibold leading-relaxed">
+                    <span class="lang-th">เมื่อทดลองใช้ปุ่มลัด สลักคีย์เวิร์กสเปซด้านขวาจะแสดงแอนิเมชันให้เข้าใจได้ลึกซึ้งทันที กดปุ่มด้านซ้ายหรือกดแป้นพิมพ์คีย์บอร์ดจริง ๆ ของคุณได้เลย!</span>
+                    <span class="lang-en">Try clicking the colorful cards or actually press keys on your computer keyboard to trigger gorgeous responsive desktop events.</span>
+                </p>
+            </div>
+
+            <!-- Main arena layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left: Guide cards to trigger -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border-4 border-vibrant-pink/20 shadow-md space-y-3">
+                        <h3 class="font-display font-extrabold text-xs text-slate-400 uppercase tracking-widest">
+                            <span class="lang-th">สูตรวิเศษที่อยากแนะนำ</span><span class="lang-en">Magic Combos</span>
+                        </h3>
+                        
+                        <div class="space-y-2.5">
+                            <!-- Copy -->
+                            <button onclick="triggerShortcutSimulator('ctrl-c')" class="w-full text-left p-3.5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:bg-pink-500/5 transition-all flex items-center justify-between">
+                                <span class="text-xs font-extrabold"><span class="lang-th">คัดลอก (Copy)</span><span class="lang-en">Copy Data</span></span>
+                                <kbd class="px-2.5 py-1 bg-pink-100 dark:bg-pink-950/60 text-vibrant-pink rounded-xl font-mono text-xs font-bold shadow-sm">Ctrl + C</kbd>
+                            </button>
+                            <!-- Paste -->
+                            <button onclick="triggerShortcutSimulator('ctrl-v')" class="w-full text-left p-3.5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:bg-orange-500/5 transition-all flex items-center justify-between">
+                                <span class="text-xs font-extrabold"><span class="lang-th">วางของ (Paste)</span><span class="lang-en">Paste Copied</span></span>
+                                <kbd class="px-2.5 py-1 bg-orange-100 dark:bg-orange-950/60 text-vibrant-orange rounded-xl font-mono text-xs font-bold shadow-sm">Ctrl + V</kbd>
+                            </button>
+                            <!-- Undo -->
+                            <button onclick="triggerShortcutSimulator('ctrl-z')" class="w-full text-left p-3.5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:bg-purple-500/5 transition-all flex items-center justify-between">
+                                <span class="text-xs font-extrabold"><span class="lang-th">ย้อนกลับ (Undo)</span><span class="lang-en">Undo Action</span></span>
+                                <kbd class="px-2.5 py-1 bg-purple-100 dark:bg-purple-950/60 text-vibrant-purple rounded-xl font-mono text-xs font-bold shadow-sm">Ctrl + Z</kbd>
+                            </button>
+                            <!-- Minimize -->
+                            <button onclick="triggerShortcutSimulator('win-d')" class="w-full text-left p-3.5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:bg-blue-500/5 transition-all flex items-center justify-between">
+                                <span class="text-xs font-extrabold"><span class="lang-th">พับทุกอย่างลง</span><span class="lang-en">Hide Windows</span></span>
+                                <kbd class="px-2.5 py-1 bg-blue-100 dark:bg-blue-950/60 text-vibrant-blue rounded-xl font-mono text-xs font-bold shadow-sm">Win + D</kbd>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Simulator status feed -->
+                    <div class="bg-gradient-to-tr from-pink-500/10 to-orange-500/10 dark:from-slate-900 border-4 border-dashed border-vibrant-orange/30 p-5 rounded-3xl space-y-2">
+                        <span class="text-[10px] font-extrabold text-vibrant-orange uppercase tracking-wider">
+                            <span class="lang-th">เสียงสะท้อนคำอธิบาย</span><span class="lang-en">Live Feedback Feed</span>
+                        </span>
+                        <p id="shortcut-explain-title" class="font-display font-extrabold text-sm text-slate-800 dark:text-slate-100">
+                            <span class="lang-th">รอสัมผัสทดลองกดคู่ลัด</span><span class="lang-en">Waiting for input...</span>
+                        </p>
+                        <p id="shortcut-explain-body" class="text-xs font-semibold text-slate-500 dark:text-slate-400 leading-relaxed">
+                            <span class="lang-th">เมื่อคุณทำการกดสูตรแป้นลัดสำเร็จที่นี่ เวิร์กสเปซด้านขวาจะแสดงกราฟิกสวยงามให้จดจำแบบไม่ต้องเสี่ยงเรื่องเครื่องพัง!</span>
+                            <span class="lang-en">Press any shortcuts to trigger beautiful actions inside the mock-up workspace window box on the right.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: Interactive Desktop Monitor and Keyboard keys -->
+                <div class="lg:col-span-8 space-y-6">
+                    <!-- Screen Simulation Workspace -->
+                    <div id="sim-workspace" class="bg-white dark:bg-slate-900 rounded-3xl border-4 border-vibrant-purple/30 shadow-2xl overflow-hidden h-72 flex flex-col relative transition-all">
+                        <!-- Top browser bar -->
+                        <div class="bg-gradient-to-r from-vibrant-pink/10 to-vibrant-purple/10 dark:from-slate-800 px-4 py-2.5 border-b-2 border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                            <span class="text-[10px] font-extrabold text-slate-500 dark:text-slate-300">
+                                <span class="lang-th">หน้าจอแสดงผลจำลอง (Workspace System)</span>
+                                <span class="lang-en">Live Sandbox Operating Display</span>
+                            </span>
+                            <div class="flex gap-1.5">
+                                <div class="w-2.5 h-2.5 rounded-full bg-vibrant-pink"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-vibrant-orange"></div>
+                            </div>
+                        </div>
+
+                        <!-- Monitor screens content -->
+                        <div class="flex-grow p-6 flex flex-col items-center justify-center text-center relative overflow-hidden bg-slate-50/50 dark:bg-slate-950/20" id="workspace-core">
+                            
+                            <!-- State normal -->
+                            <div id="workspace-state-normal" class="space-y-3 transition duration-300">
+                                <div class="w-16 h-16 bg-pink-100 dark:bg-pink-950/40 text-vibrant-pink rounded-2xl flex items-center justify-center mx-auto shadow-md">
+                                    <i data-lucide="file-text" class="w-9 h-9 animate-bounce"></i>
+                                </div>
+                                <h4 class="font-display font-extrabold text-sm text-slate-800 dark:text-slate-100" id="text-to-copy">
+                                    <span class="lang-th">"ข้อความสำคัญ: ซูชิหน้าไข่หวานอร่อย!"</span>
+                                    <span class="lang-en">"Secret Code: Sweet Egg Sushi is Delicious!"</span>
+                                </h4>
+                                <p class="text-xs text-slate-400 font-semibold">
+                                    <span class="lang-th">ใช้เมาส์คลิกด้านซ้าย หรือกด Ctrl + C จากคีย์บอร์ดเพื่อบันทึก</span>
+                                    <span class="lang-en">Hit Ctrl+C to save this yummy secret onto your virtual clipboard!</span>
+                                </p>
+                            </div>
+
+                            <!-- State pasting list -->
+                            <div id="workspace-state-paste" class="hidden w-full h-full overflow-y-auto p-4 flex-wrap gap-2.5 justify-center content-center">
+                                <!-- Generated blocks go here -->
+                            </div>
+
+                            <!-- State Glass broken -->
+                            <div id="workspace-state-glass" class="hidden space-y-3 transition duration-300">
+                                <div id="glass-visual-container" class="w-20 h-20 mx-auto flex items-center justify-center">
+                                    <i data-lucide="glass-water" id="glass-svg-icon" class="w-16 h-16 text-emerald-400"></i>
+                                </div>
+                                <h4 id="glass-text-status" class="font-display font-extrabold text-sm text-slate-800 dark:text-slate-100">
+                                    <span class="lang-th">แก้วน้ำใสไร้รอยขีดข่วน</span><span class="lang-en">Perfect Crystal Glass</span>
+                                </h4>
+                                <p id="glass-hint-status" class="text-xs text-slate-400 font-semibold">
+                                    <span class="lang-th">เมื่อคุณแผลงฤทธิ์ทำแตกแล้ว การกด Ctrl + Z จะช่วยย้อนคืนร่างเดิมได้นะ!</span>
+                                    <span class="lang-en">Once broken, trigger the magical Ctrl+Z Undo key to rewind time!</span>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Virtual Keyboard -->
+                    <div class="bg-slate-950 rounded-3xl p-5 border-4 border-slate-900 shadow-2xl relative overflow-hidden">
+                        <div class="space-y-2 select-none">
+                            <div class="flex justify-between gap-1 mb-1">
+                                <span class="text-[9px] text-pink-500 font-display font-extrabold tracking-wider">VIBRANT KEYBOARD SIMULATOR</span>
+                                <span class="text-[9px] text-purple-500 font-display font-extrabold tracking-wider">BILINGUAL</span>
+                            </div>
+                            
+                            <!-- Row 1 -->
+                            <div class="flex gap-1 justify-center">
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">Q</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">W</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">E</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">R</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">T</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">Y</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">U</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">I</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">O</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">P</kbd>
+                            </div>
+
+                            <!-- Row 2 -->
+                            <div class="flex gap-1 justify-center">
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">A</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">S</kbd>
+                                <kbd id="key-D" class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold transition-all">D</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">F</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">G</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">H</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">J</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">K</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">L</kbd>
+                            </div>
+
+                            <!-- Row 3 -->
+                            <div class="flex gap-1 justify-center">
+                                <kbd id="key-Z" class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold transition-all">Z</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">X</kbd>
+                                <kbd id="key-C" class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold transition-all">C</kbd>
+                                <kbd id="key-V" class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold transition-all">V</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">B</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">N</kbd>
+                                <kbd class="px-2 py-3 bg-slate-900 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-10 text-center font-bold">M</kbd>
+                            </div>
+
+                            <!-- Row 4 Controls -->
+                            <div class="flex gap-1 justify-center">
+                                <kbd id="key-Ctrl" class="px-4 py-3 bg-slate-800 text-white font-extrabold border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-16 text-center transition-all">Ctrl</kbd>
+                                <kbd id="key-Win" class="px-3 py-3 bg-slate-800 text-white font-extrabold border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-12 text-center transition-all">Win</kbd>
+                                <kbd class="px-3 py-3 bg-slate-800 text-slate-400 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg w-12 text-center font-bold">Alt</kbd>
+                                <kbd class="px-10 py-3 bg-slate-900 text-slate-500 border-b-4 border-slate-950 text-[10px] font-mono rounded-lg flex-grow max-w-[200px] text-center font-bold">SPACEBAR</kbd>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- More Cheat Sheets -->
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border-4 border-vibrant-purple/20 shadow-md space-y-4">
+                        <h4 class="font-display font-extrabold text-sm flex items-center gap-1.5 text-vibrant-purple">
+                            <i data-lucide="table-properties" class="w-5 h-5"></i> 
+                            <span class="lang-th">สรุปสูตรลัดเพิ่มเติมยอดฮิตสำหรับการทำงานด่วน</span>
+                            <span class="lang-en">More Essential Shortcuts You Must Know!</span>
+                        </h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs font-semibold text-slate-600 dark:text-slate-400 leading-relaxed min-w-[500px]">
+                                <thead>
+                                    <tr class="border-b-2 border-slate-200 dark:border-slate-800">
+                                        <th class="pb-2 font-bold w-1/4 text-vibrant-pink"><span class="lang-th">คีย์ลัด</span><span class="lang-en">Key Combo</span></th>
+                                        <th class="pb-2 font-bold w-1/4 text-vibrant-orange"><span class="lang-th">คำสั่งหลัก</span><span class="lang-en">Action</span></th>
+                                        <th class="pb-2 font-bold w-1/2 text-vibrant-purple"><span class="lang-th">ประโยชนใช้งานจริง</span><span class="lang-en">Real-world Benefit</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y-2 divide-slate-100 dark:divide-slate-800/50">
+                                    <tr>
+                                        <td class="py-3 font-mono font-bold text-vibrant-pink">Ctrl + S</td>
+                                        <td>Save</td>
+                                        <td><span class="lang-th">เซฟบันทึกเก็บเอกสารป้องกันหน้าจอดับงานหาย</span><span class="lang-en">Saves your progress instantly so you don't lose files!</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 font-mono font-bold text-vibrant-pink">Ctrl + A</td>
+                                        <td>Select All</td>
+                                        <td><span class="lang-th">เลือกไฮไลต์สปอยล์คำอักษรทั้งหมดในหน้าเดียว</span><span class="lang-en">Selects everything on screen with a single quick motion.</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 font-mono font-bold text-vibrant-pink">Ctrl + F</td>
+                                        <td>Find</td>
+                                        <td><span class="lang-th">สืบค้นหาประโยคคำศัพท์ในเอกสารหลายร้อยแผ่น</span><span class="lang-en">Triggers a search search box to seek words instantly.</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 font-mono font-bold text-vibrant-pink">Alt + Tab</td>
+                                        <td>Switch Window</td>
+                                        <td><span class="lang-th">สลับหน้าต่างทำงานโปรแกรมต่าง ๆ รวดเร็วที่สุด</span><span class="lang-en">Switches between active programs without touching the mouse.</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: QUIZ -->
+        <section id="tab-content-quiz" class="tab-content hidden max-w-3xl mx-auto space-y-6">
+            <div class="text-center space-y-2">
+                <span class="text-xs font-bold text-vibrant-purple uppercase tracking-widest bg-purple-100 dark:bg-purple-950/40 px-3 py-1 rounded-full">
+                    <span class="lang-th">บททดสอบประลองปัญญา</span><span class="lang-en">Knowledge Arena</span>
+                </span>
+                <h2 class="text-2xl md:text-3xl font-display font-extrabold">
+                    <span class="lang-th">กล่องแบบทดสอบฝึกทักษะฉลาดคิด</span>
+                    <span class="lang-en">Test Your Tech Knowledge Skills!</span>
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-semibold leading-relaxed">
+                    <span class="lang-th">ทำแบบทดสอบ 5 ข้อเพื่อประเมินความชำนาญ ตอบถูกลอยลอยสะสมดาวดวงสลักดาวดวงเกียรติยศกันไปเลย!</span>
+                    <span class="lang-en">Let's answer 5 playful questions to check how much you've mastered today. Earn glowing stars!</span>
+                </p>
+            </div>
+
+            <!-- Quiz container -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border-4 border-vibrant-purple/30 shadow-2xl p-6 md:p-8 space-y-6 relative overflow-hidden">
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                    <div id="quiz-progress-bar" class="bg-gradient-to-r from-vibrant-pink to-vibrant-purple h-full transition-all duration-300" style="width: 20%;"></div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs font-extrabold text-slate-500 uppercase tracking-widest">
+                    <span id="quiz-question-index">Question 1 of 5</span>
+                    <span id="quiz-live-score" class="text-vibrant-pink">Active Score: 0</span>
+                </div>
+
+                <h3 id="quiz-question-text" class="text-lg md:text-xl font-display font-extrabold leading-snug">
+                    <!-- Dynamic Question text in TH/EN loaded by JS -->
+                </h3>
+
+                <!-- Choices -->
+                <div id="quiz-choices-container" class="grid grid-cols-1 gap-3.5">
+                    <!-- Dynamic Choice Buttons loaded by JS -->
+                </div>
+
+                <!-- Explanation box -->
+                <div id="quiz-explanation-box" class="hidden p-5 rounded-2xl border-4 leading-relaxed text-sm font-bold shadow-md">
+                    <h4 id="quiz-explanation-title" class="font-display font-extrabold mb-1">Feedback Title</h4>
+                    <p id="quiz-explanation-text" class="text-slate-600 dark:text-slate-300"></p>
+                </div>
+
+                <!-- Bottom action buttons -->
+                <div class="flex justify-end pt-2">
+                    <button id="btn-quiz-next" onclick="onNextQuizQuestion()" disabled class="bg-vibrant-purple hover:bg-purple-600 text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all py-3 px-6 rounded-2xl font-extrabold text-sm flex items-center gap-2 shadow-lg shadow-purple-500/20">
+                        <span class="lang-th">ข้อถัดไป</span><span class="lang-en">Next Question</span> 
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Score Result Overlay -->
+            <div id="quiz-result-overlay" class="hidden bg-gradient-to-br from-vibrant-purple via-vibrant-pink to-vibrant-orange text-white rounded-3xl p-8 text-center space-y-6 shadow-2xl">
+                <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto text-vibrant-yellow animate-bounce border-2 border-white/20">
+                    <i data-lucide="star" class="w-10 h-10 fill-current"></i>
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-3xl font-display font-extrabold">
+                        <span class="lang-th">เรียนจบหลักสูตรอัศวินคอมพิวเตอร์!</span>
+                        <span class="lang-en">You Graduated Computer Gym!</span>
+                    </h3>
+                    <p class="text-pink-100 text-base font-bold">
+                        <span class="lang-th">คะแนนสะสมของคุณ:</span><span class="lang-en">Your final score:</span> 
+                        <strong id="quiz-final-score" class="text-vibrant-yellow text-3xl font-display font-extrabold">0</strong> / 5
+                    </p>
+                    <p id="quiz-rating-comment" class="text-sm text-pink-100 font-semibold"></p>
+                </div>
+                <div class="flex justify-center gap-4 pt-2">
+                    <button onclick="resetQuiz()" class="bg-white text-vibrant-purple hover:bg-vibrant-yellow hover:text-slate-900 transition font-extrabold px-6 py-3.5 rounded-2xl text-sm shadow-md">
+                        <span class="lang-th">ทดสอบใหม่อีกรอบ</span><span class="lang-en">Retake Quiz</span>
+                    </button>
+                    <button onclick="switchTab('home')" class="bg-white/20 border-2 border-white/40 hover:bg-white/35 transition font-bold px-6 py-3.5 rounded-2xl text-sm">
+                        <span class="lang-th">กลับไปหน้าแรก</span><span class="lang-en">Go to Home</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER INFO -->
+    <footer class="bg-white dark:bg-slate-950 border-t-4 border-vibrant-pink/20 py-8 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2 text-xs md:text-sm text-slate-500 dark:text-slate-400 font-bold">
+            <p class="font-display font-bold text-slate-700 dark:text-slate-300">
+                ⭐ <span class="lang-th">© 2026 PC Easy Learn - แหล่งเรียนรู้คอมพิวเตอร์ฉบับปฏิสัมพันธ์แสนสนุก</span>
+                <span class="lang-en">© 2026 PC Easy Learn - Fun & Vibrant Tech Learning Playground</span>
+            </p>
+            <p>
+                <span class="lang-th">ออกแบบมาเพื่อให้ทดลองเล่นอย่างปลอดภัย 100% ไม่มีทางทำเครื่องจริงพัง!</span>
+                <span class="lang-en">100% Safe Environment. Click anything, you won't break your computer!</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- GLOBAL BILINGUAL DICTIONARY & VARIABLES -->
+    <script>
+        // Language state
+        let currentLang = 'th'; // 'th' or 'en'
+        
+        // Text scale and Dark mode state
+        let globalTextScale = 1.0;
+        let isDarkMode = false;
+        
+        // Interactive Lesson 1 state
+        let clickTrainerScore = 0;
+        let simulatedGiftOpened = false;
+
+        // Simulated File Manager states & Bilingual names
+        let explorerCurrentTab = 'files'; 
+        let explorerActiveSelectionId = null;
+        let explorerClipboardId = null;
+        
+        let simulatedFiles = [
+            { id: 1, nameTh: 'บันทึกสูตรอาหาร.txt', nameEn: 'SecretCookingRecipe.txt', type: 'file' },
+            { id: 2, nameTh: 'รูปครอบครัวสุดอบอุ่น.png', nameEn: 'WarmFamilyPhoto.png', type: 'file' },
+            { id: 3, nameTh: 'เอกสารงานวิชาการสำคัญ.docx', nameEn: 'ImportantAcademicWork.docx', type: 'file' }
+        ];
+        let simulatedTrash = [];
+
+        // Shortcut simulator states
+        let activeShortcutMode = null; 
+        let pasteCount = 0;
+        let isGlassBroken = false;
+
+        // Dynamic Bilingual Quiz Data
+        const quizQuestions = [
+            {
+                questionTh: "หากคุณต้องการเปิดดูข้อมูลภายในหรือกล่องแฟ้มโฟลเดอร์ ต้องใช้การกดเมาส์แบบใด?",
+                questionEn: "To open and look inside a virtual folder or program, what mouse action is required?",
+                choicesTh: [
+                    "คลิกซ้ายเดี่ยว 1 ครั้ง",
+                    "คลิกขวาเดี่ยว 1 ครั้ง",
+                    "ดับเบิลคลิก (คลิกซ้ายรัว 2 ครั้งรวด)",
+                    "เลื่อนลูกกลิ้งเมาส์ขึ้นลง"
+                ],
+                choicesEn: [
+                    "Single left-click once",
+                    "Single right-click once",
+                    "Double-click (click left button twice rapidly)",
+                    "Scroll mouse wheel up or down"
+                ],
+                correctIndex: 2,
+                explanationTh: "ถูกต้องที่สุด! การดับเบิลคลิกซ้ายอย่างว่องไวช่วยปลุกโปรแกรมเปิดเข้าไป ส่วนคลิกซ้ายธรรมดาคือเลือก และคลิกขวาดึงเมนูเสริม",
+                explanationEn: "Correct! Left double-clicking rapidly triggers programs to execute or folders to open. Single-clicking is only for selecting objects."
+            },
+            {
+                questionTh: "เมื่อคุณพลั้งเผลอกดปุ่มลบไฟล์สำคัญลงสู่ถังขยะ คุณควรกอบกู้คืนไฟล์นั้นได้จากพื้นที่ส่วนใดเป็นอันดับแรก?",
+                questionEn: "If you accidentally delete an important file from your desktop, where should you go to restore it?",
+                choicesTh: [
+                    "แผงเอกสาร My Documents",
+                    "Recycle Bin (ถังขยะประจำคอมพิวเตอร์)",
+                    "แฟลชไดรฟ์สำรอง",
+                    "กล่องควบคุมหลัก Control Panel"
+                ],
+                choicesEn: [
+                    "My Documents workspace folder",
+                    "Recycle Bin (system garbage center)",
+                    "External USB Flash Drive",
+                    "Control Panel dashboard window"
+                ],
+                correctIndex: 1,
+                explanationTh: "เยี่ยมมาก! ทุกไฟล์ที่ลบจะถูกนำมาพักสำรองที่ถังขยะก่อนเสมอ ตราบเท่าที่เรายังไม่กด Empty Recycle Bin ลบหมดจด",
+                explanationEn: "Superb! Deleted items migrate temporarily to the Recycle Bin. You can safely pull them back unless you empty the trash forever."
+            },
+            {
+                questionTh: "รหัสผ่านข้อใดต่อไปนี้ ได้มาตรฐานความปลอดภัยและป้องกันแฮกเกอร์โจรกรรมได้แข็งแกร่งที่สุด?",
+                questionEn: "Which of the following mock passwords is the strongest against hackers trying to steal your account?",
+                choicesTh: [
+                    "12345678 (เดาง่ายสุด)",
+                    "p@ssword123 (คำศัพท์พจนานุกรมเดาง่าย)",
+                    "S0mChai_2026! (ผสมสัญลักษณ์พิมพ์ใหญ่-เล็ก และรหัสพิเศษ)",
+                    "somchai1980 (ชื่อปีเกิดเดาง่าย)"
+                ],
+                choicesEn: [
+                    "12345678 (Easiest to crack)",
+                    "p@ssword123 (Dictionary attack prone)",
+                    "S0mChai_2026! (Uppercase, lowercase, numbers, and symbols mixed)",
+                    "somchai1980 (Easy personal details leak)"
+                ],
+                correctIndex: 2,
+                explanationTh: "ถูกต้อง! รหัสที่ดีควรมีอักขระผสมกันถึง 4 รูปแบบ ความยาวเกิน 8 ตัวอักษรช่วยยืดเวลาถอดรหัสของแฮกเกอร์",
+                explanationEn: "Spot on! Mixing cases, digits, and special characters like S0mChai_2026! creates an astronomical shield against cracking tools."
+            },
+            {
+                questionTh: "คีย์ลัดบนแป้นพิมพ์ข้อใด ใช้สำหรับการคัดลอกข้อมูลหรือแฟ้มไฟล์ที่เลือกอยู่ชั่วคราว?",
+                questionEn: "Which shortcut combo is designed to copy files or selected text onto your clipboard memory?",
+                choicesTh: [
+                    "Ctrl + V",
+                    "Ctrl + C",
+                    "Ctrl + Z",
+                    "Ctrl + X"
+                ],
+                choicesEn: [
+                    "Ctrl + V",
+                    "Ctrl + C",
+                    "Ctrl + Z",
+                    "Ctrl + X"
+                ],
+                correctIndex: 1,
+                explanationTh: "ถูกต้องสุด ๆ! Ctrl + C (Copy) บันทึกข้อมูลลงสมองชั่วคราว และ Ctrl + V (Paste) คือนำข้อมูลดึงไปวางพ่นทับลงพื้นที่",
+                explanationEn: "Correct! Ctrl+C clones items into short-term virtual memory, while Ctrl+V pastes them onto your target directory."
+            },
+            {
+                questionTh: "เมื่อได้รับอีเมลแจ้งเตือนภัยเร่งด่วนว่า 'บัญชีธนาคารของท่านถูกบล็อก กรุณาคลิกลิงก์ข้างต้นกรอกรหัสยืนยันด่วน' ข้อใดคือทางออกปลอดภัยที่สุด?",
+                questionEn: "You receive an email claiming: 'Your account is frozen! Click here and type your pin code now.' What is the safest response?",
+                choicesTh: [
+                    "รีบกดคลิกลิงก์และพิมพ์รหัสกู้คืนทันทีเพื่อความปลอดภัย",
+                    "ลบอีเมลทิ้ง และติดต่อเบอร์สำนักงานหลักหลังบัตร ATM เพื่อสอบถามความจริง",
+                    "ฟอร์เวิร์ดลิงก์ส่งต่อไปให้ญาติพี่น้องเพื่อนช่วยวิเคราะห์",
+                    "ป้อนรหัสสมมติปลอม ๆ เข้าไปเพื่อท้าทายเว็บสวมรอย"
+                ],
+                choicesEn: [
+                    "Click immediately and enter credentials to solve the emergency",
+                    "Ignore/delete the mail and call the official bank hotline directly",
+                    "Forward the link to friends and relatives to let them test it",
+                    "Submit dummy fake passwords to mock the scammer database"
+                ],
+                correctIndex: 1,
+                explanationTh: "สุดยอดสติมั่นคง! ธนาคารพาณิชย์หลักไม่มีนโยบายส่งอีเมลเร่งรัดถามรหัสผ่าน ให้สงสัยว่าเป็น Phishing เสมอและโทรสอบถามธนาคารตรงเบอร์ทางการ",
+                explanationEn: "Excellent defense! Legit banks never demand passcodes via sudden urgent links. Always verify directly through official phone hotlines."
+            }
+        ];
+        let quizCurrentIndex = 0;
+        let quizScore = 0;
+    </script>
+
+    <!-- SOUND SYNTHESIZER (Web Audio API) -->
+    <script>
+        function triggerBeepSound(toneType) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (!audioCtx) return;
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (toneType === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(650, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else if (toneType === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (toneType === 'shatter') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(90, audioCtx.currentTime + 0.4);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } else if (toneType === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (toneType === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.45);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.45);
+                }
+            } catch (err) {
+                console.log("Audio API limitations or interaction rules.");
+            }
+        }
+    </script>
+
+    <!-- UTILITY CONTROLS (Toast, Size Resizer, Language Switch, Dark Mode) -->
+    <script>
+        // Language Switcher Function
+        function toggleLanguage() {
+            const htmlEl = document.documentElement;
+            const isEnglishActive = htmlEl.classList.toggle('lang-en-active');
+            currentLang = isEnglishActive ? 'en' : 'th';
+            
+            // Re-render components holding dynamic state text
+            renderExplorerGrid();
+            loadQuizQuestion();
+
+            // Fire sound and toast confirmation in correct language
+            if (currentLang === 'en') {
+                showCustomToast("Language switched to English successfully! 🇺🇸", "success");
+            } else {
+                showCustomToast("เปลี่ยนภาษาสำเร็จแล้วคุณครู! 🇹🇭", "success");
+            }
+        }
+
+        // Custom UI Toast alert
+        function showCustomToast(textMsg, statusIcon = 'info') {
+            const toastEl = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = textMsg;
+            
+            let lucideIconName = 'info';
+            if (statusIcon === 'success') {
+                lucideIconName = 'check-circle2';
+                toastEl.className = toastEl.className.replace(/border-red-500|border-vibrant-pink/g, 'border-emerald-500');
+            } else if (statusIcon === 'error') {
+                lucideIconName = 'alert-triangle';
+                toastEl.className = toastEl.className.replace(/border-emerald-500|border-vibrant-pink/g, 'border-rose-500');
+            } else {
+                toastEl.className = toastEl.className.replace(/border-emerald-500|border-rose-500/g, 'border-vibrant-pink');
+            }
+
+            toastIcon.innerHTML = `<i data-lucide="${lucideIconName}" class="w-5 h-5 text-current"></i>`;
+            lucide.createIcons();
+
+            toastEl.classList.remove('translate-y-20', 'opacity-0');
+            toastEl.classList.add('translate-y-0', 'opacity-100', 'bubble-pop');
+
+            if (statusIcon === 'error') triggerBeepSound('wrong');
+            else if (statusIcon === 'success') triggerBeepSound('success');
+            else triggerBeepSound('click');
+
+            setTimeout(() => {
+                toastEl.classList.remove('translate-y-0', 'opacity-100', 'bubble-pop');
+                toastEl.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        // Accessibility Adjust Text Size
+        function adjustTextSize(dir) {
+            if (dir === 'up') {
+                if (globalTextScale < 1.4) globalTextScale += 0.1;
+            } else {
+                if (globalTextScale > 0.9) globalTextScale -= 0.1;
+            }
+            document.getElementById('text-resizable-container').style.fontSize = `${globalTextScale}em`;
+            document.getElementById('text-size-label').innerText = `${Math.round(globalTextScale * 100)}%`;
+            triggerBeepSound('click');
+        }
+
+        // Dark Mode toggles
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            const htmlEl = document.documentElement;
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const lightIcon = document.getElementById('theme-icon-light');
+
+            if (isDarkMode) {
+                htmlEl.classList.add('dark');
+                darkIcon.classList.add('hidden');
+                lightIcon.classList.remove('hidden');
+            } else {
+                htmlEl.classList.remove('dark');
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+            }
+            triggerBeepSound('click');
+        }
+
+        // Mobile responsive navbar
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            triggerBeepSound('click');
+        }
+    </script>
+
+    <!-- TAB SWAP CONTROLLERS -->
+    <script>
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(element => {
+                element.classList.add('hidden');
+            });
+
+            // Show target
+            document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
+
+            // Reset navbar active designs
+            const navBtnIds = ['nav-home', 'nav-lessons', 'nav-shortcuts', 'nav-quiz'];
+            navBtnIds.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) {
+                    btn.className = "px-4 py-2.5 rounded-xl font-bold text-sm transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900";
+                }
+            });
+
+            // Set current active nav styling
+            const activeNavBtn = document.getElementById(`nav-${tabId}`);
+            if (activeNavBtn) {
+                activeNavBtn.className = "px-4 py-2.5 rounded-xl font-bold text-sm transition-all text-vibrant-pink bg-pink-500/10 shadow-inner border border-vibrant-pink/20";
+            }
+            triggerBeepSound('click');
+        }
+
+        function switchLessonTab(lessonTabId) {
+            document.querySelectorAll('.lesson-panel').forEach(element => {
+                element.classList.add('hidden');
+            });
+
+            document.getElementById(`lesson-tab-${lessonTabId}`).classList.remove('hidden');
+
+            const lessonBtnIds = ['btn-lesson1', 'btn-lesson2', 'btn-lesson3'];
+            lessonBtnIds.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) {
+                    btn.className = "flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 whitespace-nowrap md:whitespace-normal";
+                }
+            });
+
+            const activeBtn = document.getElementById(`btn-${lessonTabId}`);
+            if (activeBtn) {
+                activeBtn.className = "flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all text-vibrant-pink bg-pink-50 dark:bg-pink-950/30 whitespace-nowrap md:whitespace-normal";
+            }
+            triggerBeepSound('click');
+        }
+    </script>
+
+    <!-- PLAYGROUNDS JS: CHAPTER 1 (MOUSE PRACTICE) -->
+    <script>
+        // Left clicking targets
+        function onLeftClickPractice() {
+            clickTrainerScore++;
+            document.getElementById('click-score').innerText = clickTrainerScore;
+            triggerBeepSound('click');
+
+            if (clickTrainerScore >= 5) {
+                const msg = currentLang === 'th' ? "🎉 ยอดเยี่ยม! คุณซ้อมยิงคลิกซ้ายสมบูรณ์แบบแล้ว!" : "🎉 Awesome! You mastered left clicking!";
+                showCustomToast(msg, "success");
+            }
+
+            // Reposition bubble randomly in the parent container
+            const bubble = document.getElementById('target-bubble');
+            const randomX = Math.floor(Math.random() * 80) + 10;
+            const randomY = Math.floor(Math.random() * 50) + 15;
+
+            bubble.style.left = `${randomX}%`;
+            bubble.style.top = `${randomY}px`;
+        }
+
+        // Context Menu Handler (Right Click)
+        const rightClickZone = document.getElementById('right-click-zone');
+        rightClickZone.addEventListener('contextmenu', function(e) {
+            e.preventDefault(); 
+            
+            const contextMenu = document.getElementById('simulated-context-menu');
+            const bounds = rightClickZone.getBoundingClientRect();
+            const posX = e.clientX - bounds.left;
+            const posY = e.clientY - bounds.top;
+
+            contextMenu.style.left = `${posX}px`;
+            contextMenu.style.top = `${posY}px`;
+            contextMenu.classList.remove('hidden');
+
+            triggerBeepSound('success');
+            const msg = currentLang === 'th' ? "🖱️ ดึงเมนูย่อยขวาได้สำเร็จ! ลองเลือกทดสอบคำสั่ง" : "🖱️ Simulating Right-Click list popup! Tap an action.";
+            showCustomToast(msg, "info");
+        });
+
+        // Hide context menu on outer clicks
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('simulated-context-menu');
+            if (menu && !rightClickZone.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        function onContextMenuOption(optName) {
+            const menu = document.getElementById('simulated-context-menu');
+            menu.classList.add('hidden');
+            triggerBeepSound('click');
+
+            if (optName === 'new-folder') {
+                const msg = currentLang === 'th' ? "📂 จำลองเรียกใช้คำสั่ง 'สร้างโฟลเดอร์ใหม่'!" : "📂 Simulating 'Create New Folder' command!";
+                showCustomToast(msg, "success");
+            } else {
+                const msg = currentLang === 'th' ? `✔️ ทำงานเสร็จสิ้น: ${optName}` : `✔️ Simulated option activated: ${optName}`;
+                showCustomToast(msg, "success");
+            }
+        }
+
+        // Double Click Gift Box
+        function onGiftDoubleClick() {
+            const icon = document.getElementById('gift-icon');
+            const label = document.getElementById('gift-text');
+            
+            simulatedGiftOpened = !simulatedGiftOpened;
+            triggerBeepSound('success');
+
+            if (simulatedGiftOpened) {
+                icon.className = "w-9 h-9 text-emerald-500 animate-bounce";
+                icon.setAttribute('data-lucide', 'package-open');
+                label.innerHTML = currentLang === 'th' ? "🎉 แกะห่อของขวัญได้สำเร็จ! (ดับเบิลคลิกเพื่อปิด)" : "🎉 Opened! Double-click to fold box again.";
+                const msg = currentLang === 'th' ? "🎁 ดับเบิลคลิกอย่างรวดเร็วสำเร็จแล้วเก่งมากครับ!" : "🎁 Success! Fast double-clicking detected!";
+                showCustomToast(msg, "success");
+            } else {
+                icon.className = "w-9 h-9 text-vibrant-purple";
+                icon.setAttribute('data-lucide', 'package');
+                label.innerHTML = currentLang === 'th' ? "🎁 ดับเบิลคลิกเปิดกล่อง!" : "🎁 Double-click to open!";
+            }
+            lucide.createIcons();
+        }
+
+        // Scroll Checker
+        function onScrollCheck(container) {
+            const target = document.getElementById('scroll-target');
+            const bounds = target.getBoundingClientRect();
+            const parentBounds = container.getBoundingClientRect();
+
+            if (bounds.top >= parentBounds.top && bounds.bottom <= parentBounds.bottom) {
+                target.className = "bg-gradient-to-r from-emerald-500 to-teal-500 text-white h-12 rounded-xl flex items-center justify-center text-xs font-extrabold shadow-lg shadow-emerald-500/20 scale-105 transition-all duration-300";
+            }
+        }
+    </script>
+
+    <!-- PLAYGROUNDS JS: CHAPTER 2 (FILE MANAGER SIMULATOR) -->
+    <script>
+        function renderExplorerGrid() {
+            const grid = document.getElementById('explorer-grid');
+            const emptyMsg = document.getElementById('explorer-empty-msg');
+            grid.innerHTML = '';
+
+            const activeList = (explorerCurrentTab === 'files') ? simulatedFiles : simulatedTrash;
+
+            // Sync numerical counts on labels
+            document.getElementById('trash-count').innerText = simulatedTrash.length;
+            document.getElementById('trash-count-en').innerText = simulatedTrash.length;
+
+            if (activeList.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                emptyMsg.classList.add('flex');
+            } else {
+                emptyMsg.classList.add('hidden');
+                emptyMsg.classList.remove('flex');
+
+                activeList.forEach(item => {
+                    const isSelected = explorerActiveSelectionId === item.id;
+                    const selectBorder = isSelected 
+                        ? 'border-vibrant-orange bg-orange-500/10 dark:bg-orange-950/20 ring-4 ring-vibrant-orange/30' 
+                        : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/50';
+                    
+                    const fileName = (currentLang === 'th') ? item.nameTh : item.nameEn;
+                    const isFile = fileName.includes('.');
+                    const iconName = isFile ? 'file-text' : 'folder';
+                    const iconColor = isFile ? 'text-vibrant-orange' : 'text-vibrant-pink';
+
+                    const card = document.createElement('div');
+                    card.className = `p-4 rounded-2xl border-2 cursor-pointer flex flex-col items-center text-center gap-2.5 transition-all duration-300 transform ${isSelected ? 'scale-105' : ''} ${selectBorder}`;
+                    card.onclick = () => selectSimulatedItem(item.id);
+
+                    card.innerHTML = `
+                        <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center ${iconColor}">
+                            <i data-lucide="${iconName}" class="w-7 h-7"></i>
+                        </div>
+                        <span class="text-xs font-bold truncate w-full" title="${fileName}">${fileName}</span>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            // Update paste button enabled state
+            const pasteBtn = document.getElementById('btn-paste-sim');
+            if (explorerClipboardId && explorerCurrentTab === 'files') {
+                pasteBtn.disabled = false;
+                pasteBtn.className = "w-full bg-orange-500/10 hover:bg-orange-500/20 text-vibrant-orange transition-all py-2.5 px-3 rounded-xl text-xs font-extrabold flex items-center gap-2 border-2 border-vibrant-orange/30";
+            } else {
+                pasteBtn.disabled = true;
+                pasteBtn.className = "w-full bg-slate-100 dark:bg-slate-800 opacity-50 py-2.5 px-3 rounded-xl text-xs font-extrabold flex items-center gap-2 border-2 border-slate-200 dark:border-slate-700 cursor-not-allowed";
+            }
+
+            // Sync dynamic labels for buttons
+            const deleteBtn = document.getElementById('btn-delete-sim');
+            const delTh = document.getElementById('btn-delete-label-th');
+            const delEn = document.getElementById('btn-delete-label-en');
+
+            if (explorerCurrentTab === 'trash') {
+                deleteBtn.className = "w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 border-2 border-emerald-500/20 transition-all py-2.5 px-3 rounded-xl text-xs font-extrabold flex items-center gap-2";
+                if (delTh) delTh.innerText = "กู้คืนแฟ้มจากขยะ";
+                if (delEn) delEn.innerText = "Restore File";
+                deleteBtn.querySelector('i').setAttribute('data-lucide', 'rotate-ccw');
+            } else {
+                deleteBtn.className = "w-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border-2 border-rose-500/20 transition-all py-2.5 px-3 rounded-xl text-xs font-extrabold flex items-center gap-2";
+                if (delTh) delTh.innerText = "ลบแฟ้มลงถังขยะ";
+                if (delEn) delEn.innerText = "Move to Trash";
+                deleteBtn.querySelector('i').setAttribute('data-lucide', 'trash-2');
+            }
+
+            lucide.createIcons();
+        }
+
+        function changeExplorerTab(tabName) {
+            explorerCurrentTab = tabName;
+            explorerActiveSelectionId = null;
+
+            const filesBtn = document.getElementById('explorer-btn-files');
+            const trashBtn = document.getElementById('explorer-btn-trash');
+
+            if (tabName === 'files') {
+                filesBtn.className = "text-xs font-bold px-3.5 py-2 rounded-xl transition bg-vibrant-orange text-white shadow-md shadow-orange-500/20";
+                trashBtn.className = "text-xs font-bold px-3.5 py-2 rounded-xl transition text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800";
+            } else {
+                trashBtn.className = "text-xs font-bold px-3.5 py-2 rounded-xl transition bg-vibrant-orange text-white shadow-md shadow-orange-500/20";
+                filesBtn.className = "text-xs font-bold px-3.5 py-2 rounded-xl transition text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800";
+            }
+
+            triggerBeepSound('click');
+            renderExplorerGrid();
+        }
+
+        function selectSimulatedItem(itemId) {
+            explorerActiveSelectionId = itemId;
+            triggerBeepSound('click');
+            renderExplorerGrid();
+        }
+
+        function createSimulatedFolder() {
+            if (explorerCurrentTab !== 'files') {
+                const msg = currentLang === 'th' ? "⚠️ สลับแท็บไปที่ 'แฟ้มงานหลัก' ก่อนสิคะ!" : "⚠️ Switch to 'My Files' tab first!";
+                showCustomToast(msg, "error");
+                return;
+            }
+            const folderCount = simulatedFiles.filter(f => !f.nameTh.includes('.')).length + 1;
+            const newFolder = {
+                id: Date.now(),
+                nameTh: `โฟลเดอร์ของกะทิ ${folderCount}`,
+                nameEn: `KatiPersonalFolder ${folderCount}`,
+                type: 'folder'
+            };
+            simulatedFiles.push(newFolder);
+            triggerBeepSound('success');
+            
+            const msg = currentLang === 'th' 
+                ? `📂 สร้างโฟลเดอร์ "${newFolder.nameTh}" เรียบร้อย!` 
+                : `📂 Created folder "${newFolder.nameEn}" successfully!`;
+            showCustomToast(msg, "success");
+            renderExplorerGrid();
+        }
+
+        function copySimulatedFile() {
+            if (explorerCurrentTab !== 'files') {
+                const msg = currentLang === 'th' ? "⚠️ คุณไม่สามารถคัดลอกไฟล์จากถังขยะได้" : "⚠️ You cannot copy items from the trash bin!";
+                showCustomToast(msg, "error");
+                return;
+            }
+            if (!explorerActiveSelectionId) {
+                const msg = currentLang === 'th' ? "📂 กรุณาคลิกเลือกไฟล์/โฟลเดอร์ก่อน" : "📂 Please click on a file or folder first!";
+                showCustomToast(msg, "error");
+                return;
+            }
+            explorerClipboardId = explorerActiveSelectionId;
+            const item = simulatedFiles.find(f => f.id === explorerClipboardId);
+            const itemName = currentLang === 'th' ? item.nameTh : item.nameEn;
+            
+            const msg = currentLang === 'th' 
+                ? `📋 คัดลอก "${itemName}" เข้าระบบคลิปบอร์ดแล้ว!` 
+                : `📋 Copied "${itemName}" to virtual clipboard!`;
+            showCustomToast(msg, "success");
+            renderExplorerGrid();
+        }
+
+        function pasteSimulatedFile() {
+            if (!explorerClipboardId) return;
+            const sourceItem = simulatedFiles.find(f => f.id === explorerClipboardId);
+            
+            if (sourceItem) {
+                const isFileTh = sourceItem.nameTh.includes('.');
+                const namePartTh = isFileTh ? sourceItem.nameTh.split('.')[0] : sourceItem.nameTh;
+                const extTh = isFileTh ? '.' + sourceItem.nameTh.split('.')[1] : '';
+
+                const isFileEn = sourceItem.nameEn.includes('.');
+                const namePartEn = isFileEn ? sourceItem.nameEn.split('.')[0] : sourceItem.nameEn;
+                const extEn = isFileEn ? '.' + sourceItem.nameEn.split('.')[1] : '';
+
+                const newItem = {
+                    id: Date.now(),
+                    nameTh: `${namePartTh} - สำเนา${extTh}`,
+                    nameEn: `${namePartEn} - Copy${extEn}`,
+                    type: sourceItem.type
+                };
+
+                simulatedFiles.push(newItem);
+                triggerBeepSound('success');
+                
+                const msg = currentLang === 'th' 
+                    ? `✨ วางไฟล์สำเนาใหม่เรียบร้อย!` 
+                    : `✨ Cloned file pasted successfully!`;
+                showCustomToast(msg, "success");
+            } else {
+                const msg = currentLang === 'th' ? "❌ หาต้นฉบับไม่พบเสียแล้ว" : "❌ Original file was removed or deleted!";
+                showCustomToast(msg, "error");
+            }
+            renderExplorerGrid();
+        }
+
+        function deleteSimulatedFile() {
+            if (!explorerActiveSelectionId) {
+                const msg = currentLang === 'th' ? "💡 เลือกโฟลเดอร์หรือเอกสารก่อนกดย้าย" : "💡 Click an object to choose first!";
+                showCustomToast(msg, "error");
+                return;
+            }
+
+            if (explorerCurrentTab === 'files') {
+                const itemIndex = simulatedFiles.findIndex(f => f.id === explorerActiveSelectionId);
+                const item = simulatedFiles[itemIndex];
+                
+                simulatedFiles.splice(itemIndex, 1);
+                simulatedTrash.push(item);
+                triggerBeepSound('shatter');
+
+                const itemName = currentLang === 'th' ? item.nameTh : item.nameEn;
+                const msg = currentLang === 'th' 
+                    ? `🗑️ ย้าย "${itemName}" สู่ถังขยะเรียบร้อย` 
+                    : `🗑️ Moved "${itemName}" to virtual Trash!`;
+                showCustomToast(msg, "success");
+            } else {
+                // Restore
+                const itemIndex = simulatedTrash.findIndex(f => f.id === explorerActiveSelectionId);
+                const item = simulatedTrash[itemIndex];
+
+                simulatedTrash.splice(itemIndex, 1);
+                simulatedFiles.push(item);
+                triggerBeepSound('success');
+
+                const itemName = currentLang === 'th' ? item.nameTh : item.nameEn;
+                const msg = currentLang === 'th' 
+                    ? `♻️ กู้กอบกู้ไฟล์ "${itemName}" กลับแล้ว!` 
+                    : `♻️ Restored "${itemName}" back to workspace!`;
+                showCustomToast(msg, "success");
+            }
+
+            explorerActiveSelectionId = null;
+            renderExplorerGrid();
+        }
+    </script>
+
+    <!-- PLAYGROUNDS JS: CHAPTER 3 (SECURITY SHIELD) -->
+    <script>
+        function checkPasswordStrength() {
+            const pwd = document.getElementById('pwd-checker-input').value;
+            
+            const ruleLen = pwd.length >= 8;
+            const ruleCase = /[a-z]/.test(pwd) && /[A-Z]/.test(pwd);
+            const ruleNum = /[0-9]/.test(pwd);
+            const ruleSym = /[^a-zA-Z0-9]/.test(pwd);
+
+            updateRuleIndicator('pwd-rule-len', ruleLen);
+            updateRuleIndicator('pwd-rule-case', ruleCase);
+            updateRuleIndicator('pwd-rule-num', ruleNum);
+            updateRuleIndicator('pwd-rule-sym', ruleSym);
+
+            const score = [ruleLen, ruleCase, ruleNum, ruleSym].filter(Boolean).length;
+            const label = document.getElementById('pwd-strength-label');
+
+            if (pwd === '') {
+                label.innerHTML = currentLang === 'th' ? "ว่างเปล่า" : "Empty Input";
+                label.className = "text-sm font-extrabold text-slate-400";
+            } else if (score <= 1) {
+                label.innerHTML = currentLang === 'th' ? "เดาง่ายมาก (อ่อนแอ ❌)" : "Super Weak (Hacked instantly! ❌)";
+                label.className = "text-sm font-extrabold text-rose-500 animate-pulse";
+            } else if (score === 2) {
+                label.innerHTML = currentLang === 'th' ? "พอเดาได้ (ยังไม่แข็งแกร่ง ⚠️)" : "Fairly Weak (Hackable ⚠️)";
+                label.className = "text-sm font-extrabold text-amber-500";
+            } else if (score === 3) {
+                label.innerHTML = currentLang === 'th' ? "ปลอดภัยปานกลาง 👍" : "Strong Security 👍";
+                label.className = "text-sm font-extrabold text-blue-500";
+            } else if (score === 4) {
+                label.innerHTML = currentLang === 'th' ? "เกราะเพชรแข็งแกร่งสุดยอด! 🛡️" : "Uncrackable Iron Vault! 🛡️";
+                label.className = "text-sm font-extrabold text-emerald-500 animate-pulse";
+            }
+        }
+
+        function updateRuleIndicator(id, passed) {
+            const indicator = document.getElementById(id);
+            if (passed) {
+                indicator.className = "w-3.5 h-3.5 rounded-full bg-emerald-500 shadow-md shadow-emerald-500/20";
+            } else {
+                indicator.className = "w-3.5 h-3.5 rounded-full bg-slate-300 dark:bg-slate-800";
+            }
+        }
+
+        function onSelectPhishing(opt) {
+            const box = document.getElementById('phishing-result-box');
+            const text = document.getElementById('phishing-result-text');
+
+            box.classList.remove('hidden');
+
+            if (opt === 'scb-real') {
+                box.className = "p-4 rounded-2xl text-xs font-bold leading-relaxed border-2 bg-emerald-500/5 text-emerald-600 border-emerald-500/20 shadow-md";
+                if (currentLang === 'th') {
+                    text.innerHTML = `<strong>ถูกต้องมากค่ะ! 🎉</strong> เว็บหลักที่ปลอดภัย มักมีโปรโตคอลระบบความปลอดภัย 'https://' และมีโดเมนเนมจดทะเบียนตัวตน (.co.th สำหรับองค์กรในไทย) ไม่แอบแฝงคำขยาย`;
+                } else {
+                    text.innerHTML = `<strong>Awesome Answer! 🎉</strong> Official portals utilize SSL protocols like 'https://' and end exactly with trusted domains (like .co.th for Thai corporate entities) without suspicious subdomains.`;
+                }
+                triggerBeepSound('correct');
+            } else {
+                box.className = "p-4 rounded-2xl text-xs font-bold leading-relaxed border-2 bg-rose-500/5 text-rose-500 border-rose-500/20 shadow-md";
+                if (currentLang === 'th') {
+                    text.innerHTML = `<strong>อันตรายสวมรอย! ❌</strong> สังเกตตัวพิมพ์ 'scb-bank-security-service' แฮกเกอร์แต่งคำขยายออกมาหลอกตาคนสะเพร่า มีโปรโตคอลธรรมดา 'http://' เท่านั้น`;
+                } else {
+                    text.innerHTML = `<strong>Dangerous Scammer Trap! ❌</strong> Watch closely at the domain naming structure. It includes arbitrary words like '-bank-security-service' to impersonate real entities on unsecured 'http://' protocols.`;
+                }
+                triggerBeepSound('wrong');
+            }
+        }
+    </script>
+
+    <!-- SHORTCUT ARENA SIMULATOR INTERACTION LOGIC -->
+    <script>
+        // Highlighting virtual keys on client physical typing
+        window.addEventListener('keydown', function(e) {
+            const screen = document.getElementById('tab-content-shortcuts');
+            if (screen.classList.contains('hidden')) return;
+
+            let pressedCtrl = e.ctrlKey || e.metaKey;
+            let pressedWin = e.key === 'Meta' || e.metaKey;
+
+            if (pressedCtrl) highlightVirtualKey('key-Ctrl');
+            if (pressedWin) highlightVirtualKey('key-Win');
+            if (e.key.toUpperCase() === 'C') highlightVirtualKey('key-C');
+            if (e.key.toUpperCase() === 'V') highlightVirtualKey('key-V');
+            if (e.key.toUpperCase() === 'Z') highlightVirtualKey('key-Z');
+            if (e.key.toUpperCase() === 'D') highlightVirtualKey('key-D');
+
+            if (pressedCtrl && e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+                triggerShortcutSimulator('ctrl-c');
+            } else if (pressedCtrl && e.key.toLowerCase() === 'v') {
+                e.preventDefault();
+                triggerShortcutSimulator('ctrl-v');
+            } else if (pressedCtrl && e.key.toLowerCase() === 'z') {
+                e.preventDefault();
+                triggerShortcutSimulator('ctrl-z');
+            } else if (pressedWin && e.key.toLowerCase() === 'd') {
+                e.preventDefault();
+                triggerShortcutSimulator('win-d');
+            }
+        });
+
+        window.addEventListener('keyup', function(e) {
+            unhighlightVirtualKey('key-Ctrl');
+            unhighlightVirtualKey('key-Win');
+            unhighlightVirtualKey('key-C');
+            unhighlightVirtualKey('key-V');
+            unhighlightVirtualKey('key-Z');
+            unhighlightVirtualKey('key-D');
+        });
+
+        function highlightVirtualKey(id) {
+            const el = document.getElementById(id);
+            if (el) el.className = el.className.replace(/bg-slate-700|bg-slate-800|bg-slate-900/g, 'bg-vibrant-pink scale-95 shadow-inner text-white border-b-2');
+        }
+
+        function unhighlightVirtualKey(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                if (id === 'key-Ctrl' || id === 'key-Win') {
+                    el.className = el.className.replace('bg-vibrant-pink scale-95 shadow-inner text-white border-b-2', 'bg-slate-800');
+                } else {
+                    el.className = el.className.replace('bg-vibrant-pink scale-95 shadow-inner text-white border-b-2', 'bg-slate-900');
+                }
+            }
+        }
+
+        // Triggering workspace animations
+        function triggerShortcutSimulator(shortcutType) {
+            activeShortcutMode = shortcutType;
+
+            const title = document.getElementById('shortcut-explain-title');
+            const desc = document.getElementById('shortcut-explain-body');
+            const spaceCore = document.getElementById('workspace-core');
+
+            const normalState = document.getElementById('workspace-state-normal');
+            const pasteState = document.getElementById('workspace-state-paste');
+            const glassState = document.getElementById('workspace-state-glass');
+
+            if (shortcutType === 'ctrl-c') {
+                normalState.classList.remove('hidden');
+                pasteState.classList.add('hidden');
+                glassState.classList.add('hidden');
+
+                if (currentLang === 'th') {
+                    title.innerHTML = "คัดลอก (Copy) สำเร็จ!";
+                    desc.innerHTML = "ข้อความที่จำลองไว้ ได้เข้าจดบันทึกไว้ในหน่วยประมวลผลชั่วคราวแล้ว ต่อไปลองกดสั่ง 'วาง (Ctrl + V)' ดึงออกมาใช้ได้เรื่อยๆ!";
+                } else {
+                    title.innerHTML = "Cloned Successfully! (Ctrl+C)";
+                    desc.innerHTML = "The mock text has been copied to your virtual system's clipboard. Now click or press Ctrl+V to paint copies!";
+                }
+                
+                const textEl = document.getElementById('text-to-copy');
+                textEl.className = "font-display font-extrabold text-sm bg-gradient-to-r from-vibrant-pink to-vibrant-purple text-white rounded-xl px-4 py-2 transition-all duration-300 scale-105 shadow-md shadow-pink-500/20";
+                triggerBeepSound('success');
+
+                setTimeout(() => {
+                    textEl.className = "font-display font-extrabold text-sm text-slate-800 dark:text-slate-100";
+                }, 900);
+
+            } else if (shortcutType === 'ctrl-v') {
+                normalState.classList.add('hidden');
+                pasteState.classList.remove('hidden');
+                pasteState.classList.add('flex');
+                glassState.classList.add('hidden');
+
+                if (currentLang === 'th') {
+                    title.innerHTML = "วางข้อความ (Paste) ทับแล้ว!";
+                    desc.innerHTML = "พ่นสำเนาข้อความที่จดจำล่าสุด ออกมาปรากฏในพื้นที่ทดลอง ซ้อมกดย้ำปั๊มป้ายสีรุ้งให้สะสมความสุข!";
+                } else {
+                    title.innerHTML = "Pasted Clones! (Ctrl+V)";
+                    desc.innerHTML = "We retrieved the cloned document and stamped it down. Press or click multiple times to stack gorgeous labels!";
+                }
+
+                pasteCount++;
+                const colors = ['bg-vibrant-pink', 'bg-vibrant-orange', 'bg-vibrant-purple', 'bg-vibrant-blue', 'bg-vibrant-mint'];
+                const selCol = colors[pasteCount % colors.length];
+                
+                const newTag = document.createElement('span');
+                newTag.className = `px-3.5 py-2 ${selCol} text-slate-900 font-extrabold text-xs rounded-xl shadow-md animate-float shrink-0 transition-transform hover:scale-105`;
+                newTag.innerText = currentLang === 'th' ? `📄 ซูชิจำลองแผ่นที่ #${pasteCount}` : `📄 Yummy Sushi Clone #${pasteCount}`;
+                pasteState.appendChild(newTag);
+                triggerBeepSound('click');
+
+            } else if (shortcutType === 'ctrl-z') {
+                normalState.classList.add('hidden');
+                pasteState.classList.add('hidden');
+                glassState.classList.remove('hidden');
+
+                const icon = document.getElementById('glass-svg-icon');
+                const label = document.getElementById('glass-text-status');
+                const hint = document.getElementById('glass-hint-status');
+
+                if (!isGlassBroken) {
+                    isGlassBroken = true;
+                    icon.setAttribute('data-lucide', 'shattered-glass');
+                    icon.className = "w-16 h-16 text-rose-500 glass-broken";
+                    
+                    if (currentLang === 'th') {
+                        label.innerText = "โอ้โห! เกิดอุบัติเหตุทำแก้วน้ำหล่นแตกแล้ว!";
+                        hint.innerText = "ไม่ต้องตกใจไป! รีบกดคีย์วิเศษ 'Ctrl + Z' ย้อนเวลาประกอบชิ้นส่วนขึ้นสิคะ";
+                        title.innerText = "เกิดข้อผิดพลาดขึ้น!";
+                        desc.innerText = "ในการทำงาน พิมพ์เอกสารตกหล่นหรือกดลบคำพลาด คีย์ลัดดึงสติย้อนกุมข้อบกพร่องคืนร่างได้อย่างปลอดภัยไร้ห่วง";
+                    } else {
+                        label.innerText = "Oh no! The glass fell down and broke!";
+                        hint.innerText = "Do not panic! Quickly tap the magical Ctrl+Z Undo combo to rewind time!";
+                        title.innerText = "Accidental Event Triggered!";
+                        desc.innerText = "When typing word processors, accidental deletion can happen. Use the 'Undo' timemachine trick to recover instantly!";
+                    }
+                    triggerBeepSound('shatter');
+                } else {
+                    isGlassBroken = false;
+                    icon.setAttribute('data-lucide', 'glass-water');
+                    icon.className = "w-16 h-16 text-emerald-400 glass-restored";
+                    
+                    if (currentLang === 'th') {
+                        label.innerText = "ย้อนเวลากลับมา แก้วคืนรูปสลักใสไร้รอย!";
+                        hint.innerText = "นี่แหละหน้าที่หลักของ Ctrl + Z คืนชีวิตความผิดพลาด!";
+                        title.innerText = "ย้อนคืนร่าง (Undo) สำเร็จสมบูรณ์!";
+                        desc.innerText = "คุณซ่อมเวลาได้เหมือนมีเวทมนตร์ ฝึกจำลองปุ่มนี้ไว้เพื่อความรอบคอบในการพิมพ์รายงาน!";
+                    } else {
+                        label.innerText = "Water glass fully restored!";
+                        hint.innerText = "That's the wonderful power of the Ctrl+Z Undo timemachine!";
+                        title.innerText = "Rewound Success (Undo)!";
+                        desc.innerText = "You have successfully rolled back the accident. Practice this trick when drafting reports!";
+                    }
+                    triggerBeepSound('correct');
+                }
+                lucide.createIcons();
+
+            } else if (shortcutType === 'win-d') {
+                const workspace = document.getElementById('sim-workspace');
+                workspace.className = workspace.className.replace('h-72', 'h-12');
+                triggerBeepSound('shatter');
+                
+                if (currentLang === 'th') {
+                    title.innerText = "พับปิดซ่อนทุกจอไปหน้า Desktop ทันควัน!";
+                    desc.innerText = "หน้าต่างทั้งหมดจำลองหดรูดสไลด์พับเก็บ เผยโต๊ะสลักเครื่องว่างเพื่อจัดเตรียมดูข้อมูลใหม่";
+                    showCustomToast("🖥️ พับจอดับลงด่วนแล้ว! รอ 3 วินาทีระบบจะดึงหน้าต่างยืดกลับขึ้นมา", "info");
+                } else {
+                    title.innerText = "Folded Windows! (Minimize All to Desktop)";
+                    desc.innerText = "Instantly clears your path and reveals your clean Desktop wallpaper space underneath!";
+                    showCustomToast("🖥️ Dashboard minimized. Auto-restoring layout back in 3 seconds!", "info");
+                }
+
+                setTimeout(() => {
+                    workspace.className = workspace.className.replace('h-12', 'h-72');
+                }, 3000);
+            }
+        }
+    </script>
+
+    <!-- PLAYGROUNDS JS: DYNAMIC QUIZ SYSTEM -->
+    <script>
+        function loadQuizQuestion() {
+            if (quizCurrentIndex >= quizQuestions.length) {
+                // Show final card
+                document.getElementById('quiz-result-overlay').classList.remove('hidden');
+                document.getElementById('quiz-final-score').innerText = quizScore;
+                
+                const card = document.querySelector('#tab-content-quiz > div');
+                card.classList.add('hidden');
+
+                const rating = document.getElementById('quiz-rating-comment');
+                if (quizScore === 5) {
+                    rating.innerHTML = currentLang === 'th' 
+                        ? "สุดยอดปรมาจารย์! 🥳 คุณเข้าใจระบบคอมพิวเตอร์อย่างลึกซึ้ง และพร้อมท่องเน็ตปลอดภัย!" 
+                        : "Grandmaster Champion! 🥳 Perfect score. You are now a certified, cyber-secured computer wizard!";
+                } else if (quizScore >= 3) {
+                    rating.innerHTML = currentLang === 'th' 
+                        ? "เก่งมากเลยค่ะ! 😎 สอบผ่านเกณฑ์ประเมิน กลับไปทบทวนบทเรียนอีกรอบสะสมดวงดาวให้เต็มกัน!" 
+                        : "Fantastic Job! 😎 You passed. Review the sections once more to claim a perfect stellar score!";
+                } else {
+                    rating.innerHTML = currentLang === 'th' 
+                        ? "สู้ ๆ นะคะ! 😊 กลับไปเปิดบทเรียนซ้อมจิ้มเมาส์ใหม่ แล้วค่อยย้อนกลับมาทายผลสะสมคะแนนกันใหม่" 
+                        : "Never give up! 😊 Re-read the chapters, practice on the simulators, and try again anytime!";
+                }
+                return;
+            }
+
+            const q = quizQuestions[quizCurrentIndex];
+            
+            // Render text language accordingly
+            const qTitle = (currentLang === 'th') ? q.questionTh : q.questionEn;
+            document.getElementById('quiz-question-text').innerText = qTitle;
+
+            const qIdxLabel = (currentLang === 'th') 
+                ? `คำถามข้อที่ ${quizCurrentIndex + 1} / ${quizQuestions.length}` 
+                : `Question ${quizCurrentIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('quiz-question-index').innerText = qIdxLabel;
+
+            const liveScoreLabel = (currentLang === 'th') 
+                ? `คะแนนสะสม: ${quizScore}` 
+                : `Live Score: ${quizScore}`;
+            document.getElementById('quiz-live-score').innerText = liveScoreLabel;
+
+            const percent = ((quizCurrentIndex + 1) / quizQuestions.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${percent}%`;
+
+            document.getElementById('quiz-explanation-box').classList.add('hidden');
+            document.getElementById('btn-quiz-next').disabled = true;
+
+            const container = document.getElementById('quiz-choices-container');
+            container.innerHTML = '';
+
+            const activeChoices = (currentLang === 'th') ? q.choicesTh : q.choicesEn;
+
+            activeChoices.forEach((choiceText, index) => {
+                const keys = ["A", "B", "C", "D"];
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 hover:border-vibrant-purple transition-all duration-300 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50 transform hover:-translate-y-0.5 shadow-sm";
+                btn.onclick = () => onSelectQuizChoice(index);
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-vibrant-purple text-white rounded-full flex items-center justify-center shrink-0 font-extrabold text-xs shadow-md">${keys[index]}</div>
+                        <span class="text-xs md:text-sm font-bold">${choiceText}</span>
+                    </div>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function onSelectQuizChoice(choiceIndex) {
+            const q = quizQuestions[quizCurrentIndex];
+            const container = document.getElementById('quiz-choices-container');
+            const explanationBox = document.getElementById('quiz-explanation-box');
+            const explanationText = document.getElementById('quiz-explanation-text');
+            const explanationTitle = document.getElementById('quiz-explanation-title');
+
+            if (!document.getElementById('btn-quiz-next').disabled) return;
+
+            const isCorrect = (choiceIndex === q.correctIndex);
+
+            if (isCorrect) {
+                quizScore++;
+                explanationBox.className = "p-5 rounded-2xl border-4 bg-emerald-500/5 text-emerald-600 border-emerald-500/20 leading-relaxed text-xs md:text-sm font-bold shadow-md";
+                explanationTitle.innerText = currentLang === 'th' ? "ถูกต้องสมบูรณ์แบบ! 🎉" : "Correct! Excellent answer 🎉";
+                triggerBeepSound('correct');
+            } else {
+                explanationBox.className = "p-5 rounded-2xl border-4 bg-rose-500/5 text-rose-500 border-rose-500/20 leading-relaxed text-xs md:text-sm font-bold shadow-md";
+                explanationTitle.innerText = currentLang === 'th' ? "ยังไม่ถูกต้องนะคะ ❌" : "Not quite right ❌";
+                triggerBeepSound('wrong');
+            }
+
+            const activeExplain = (currentLang === 'th') ? q.explanationTh : q.explanationEn;
+            explanationText.innerText = activeExplain;
+            explanationBox.classList.remove('hidden');
+
+            // Set styling on buttons to reveal correct vs incorrect choices
+            Array.from(container.children).forEach((btn, idx) => {
+                btn.onclick = null; 
+                if (idx === q.correctIndex) {
+                    btn.className = "w-full text-left p-4 rounded-2xl border-4 border-emerald-500 bg-emerald-500/5 text-emerald-600 transition flex items-center justify-between";
+                } else if (idx === choiceIndex) {
+                    btn.className = "w-full text-left p-4 rounded-2xl border-4 border-rose-500 bg-rose-500/5 text-rose-500 transition flex items-center justify-between";
+                }
+            });
+
+            document.getElementById('btn-quiz-next').disabled = false;
+        }
+
+        function onNextQuizQuestion() {
+            quizCurrentIndex++;
+            triggerBeepSound('click');
+            loadQuizQuestion();
+        }
+
+        function resetQuiz() {
+            quizCurrentIndex = 0;
+            quizScore = 0;
+            
+            document.getElementById('quiz-result-overlay').classList.add('hidden');
+            const card = document.querySelector('#tab-content-quiz > div');
+            card.classList.remove('hidden');
+
+            loadQuizQuestion();
+        }
+    </script>
+
+    <!-- GLOBAL BOOT INITIALIZER -->
+    <script>
+        window.onload = function() {
+            // Render file list grids & quiz data
+            renderExplorerGrid();
+            loadQuizQuestion();
+
+            // Initialize Lucide vector graphics library
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
